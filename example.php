@@ -4,8 +4,7 @@
 $consumerKey = '';
 $consumerSecret = '';
 
-include 'Dropbox/OAuth.php';
-include 'Dropbox/API.php';
+include 'Dropbox/autoload.php';
 
 session_start();
 
