@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Dropbox</name>
+ <channel>pear.sabredav.org</channel>
+ <summary>Dropbox API library for PHP</summary>
+ <description>Dropbox API library for PHP.
+
+Requires oauth and json</description>
+ <lead>
+  <name>Evert Pot</name>
+  <user>evert</user>
+  <email>evert@rooftopsolutions.nl</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-05-08</date>
+ <time>09:51:54</time>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+ <notes>
+First release
+ </notes>
+ <contents>
+  <dir baseinstalldir="." name="/">
+   <file baseinstalldir="." md5sum="41de96477742ca507ddd03e708fcad47" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
+   <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
+   <file baseinstalldir="." md5sum="a50f2499a3a2dbb85e0f37cb6256dcdc" name="Dropbox/OAuth.php" role="php" />
+   <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
+   <file baseinstalldir="." md5sum="ae09cf4aba398ff9aa14c2f8e7280349" name="examples/accountinfo.php" role="doc" />
+   <file baseinstalldir="." md5sum="da9f860f46968cec0d75d193de24d88d" name="examples/download_image.php" role="doc" />
+   <file baseinstalldir="." md5sum="0263e06418c75779afe4ca23bc02d2b8" name="LICENSE" role="doc" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+   <extension>
+    <name>oauth</name>
+   </extension>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2010-05-08</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+First release
+   </notes>
+  </release>
+ </changelog>
+</package>
