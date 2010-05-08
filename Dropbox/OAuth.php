@@ -108,7 +108,7 @@ class Dropbox_OAuth {
             switch($lastResponseInfo['http_code']) {
 
                 case 404 : 
-                    throw new Dropbox_Exception_FileNotFound('Resource at uri: ' . $uri . ' could not be found');
+                    throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
                 default:
                     // rethrowing
                     echo $e->lastResponse . "<br />";
