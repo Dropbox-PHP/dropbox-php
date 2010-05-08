@@ -1,21 +1,46 @@
 <?php
 
 /**
- * Dropbox OAuth 
+ * Dropbox OAuth
  * 
  * @package Dropbox 
- * @copyright Copyright (C) 2007-2010 Rooftop Solutions. All rights reserved.
+ * @copyright Copyright (C) 2010 Rooftop Solutions. All rights reserved.
  * @author Evert Pot (http://www.rooftopsolutions.nl/) 
- * @license http://code.google.com/p/dropbox-php/wiki/License
+ * @license http://code.google.com/p/dropbox-php/wiki/License MIT
+ */
+
+
+/**
+ * This class is used to sign all requests to dorpbox
+ * It's mostly a convenience wrapper around the oath extension
  */
 class Dropbox_OAuth {
 
+    /**
+     * BaseURI to dropbox api 
+     * 
+     * @var string
+     */
     public $baseUri = 'http://api.dropbox.com/0/';
-    
+   
+    /**
+     * OAuth object
+     *
+     * @var OAuth
+     */
     protected $oAuth;
 
+    /**
+     * Reference to session
+     */
     public $_SESSION;
 
+    /**
+     * Constructor
+     * 
+     * @param string $consumerKey 
+     * @param string$consumerSecret 
+     */
     public function __construct($consumerKey, $consumerSecret) {
 
         $this->OAuth = new OAuth($consumerKey, $consumerSecret,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
@@ -24,6 +49,18 @@ class Dropbox_OAuth {
 
     }
 
+    /**
+     * Sets up authentication
+     *
+     * Note that this method will need to be called multiple times for the 
+     * different authentication steps.
+     *
+     * The first time it will request request tokens. The second time it will redirect the
+     * user to the permission page. Subsequent times will simply set up the 
+     * oauth object.
+     * 
+     * @return void
+     */
     public function setup() {
 
         if (!isset($this->_SESSION['dropbox_state'])) $this->_SESSION['dropbox_state'] = 0;
@@ -44,20 +81,50 @@ class Dropbox_OAuth {
 
     }
 
+    /**
+     * Fetches a secured oauth url and returns the response body. 
+     * 
+     * @param string $uri 
+     * @param mixed $arguments 
+     * @param string $method 
+     * @param array $httpHeaders 
+     * @return string 
+     */
     public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()) {
 
-        try {
-            //$this->OAuth->fetch('http://localhost:61783/~evert2/code/dropbox/bla.php/' . $uri, $arguments, $method, $httpHeaders);
-            $this->OAuth->fetch($this->baseUri . $uri, $arguments, $method, $httpHeaders);
+        if (strpos($uri,'http://')!==0 && strpos($uri,'https://')!==0) {
+            $uri = $this->baseUri . $uri;
+        } else {
+           // $uri = 'http://localhost:61783/~evert2/code/dropbox/bla.php/' . $uri;
+        }
+
+        try { 
+            $this->OAuth->fetch($uri, $arguments, $method, $httpHeaders);
             $result = $this->OAuth->getLastResponse();
-            return json_decode($result);
+            return $result;
         } catch (OAuthException $e) {
-            print_r($this->OAuth->getLastResponse());
-            die();
+
+            $lastResponseInfo = $this->OAuth->getLastResponseInfo();
+            switch($lastResponseInfo['http_code']) {
+
+                case 404 : 
+                    throw new Dropbox_Exception_FileNotFound('Resource at uri: ' . $uri . ' could not be found');
+                default:
+                    // rethrowing
+                    echo $e->lastResponse . "<br />";
+                    var_dump($lastResponseInfo);
+                    throw $e;
+            }
+
         }
 
     }
 
+    /**
+     * Requests the OAuth request token 
+     * 
+     * @return void 
+     */
     public function request_token() {
 
         if (!isset($this->_SESSION['dropbox_oauth_token'])) {
@@ -69,6 +136,9 @@ class Dropbox_OAuth {
 
     }
 
+    /**
+     * Redirects the user to the authorization url
+     */
     public function authorize() {
 
         $this->request_token();
@@ -79,6 +149,9 @@ class Dropbox_OAuth {
 
     }
 
+    /**
+     * Fetches an access token
+     */
     public function access_token() {
 
         $uri = $this->baseUri . 'oauth/access_token';

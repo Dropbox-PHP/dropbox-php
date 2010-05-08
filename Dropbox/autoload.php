@@ -3,11 +3,10 @@
 /**
  * This file registers a new autoload function using spl_autoload_register. 
  *
- * @package Sabre
- * @subpackage DAV
- * @copyright Copyright (C) 2007-2010 Rooftop Solutions. All rights reserved.
+ * @package Dropbox 
+ * @copyright Copyright (C) 2010 Rooftop Solutions. All rights reserved.
  * @author Evert Pot (http://www.rooftopsolutions.nl/) 
- * @license http://code.google.com/p/dropbox-php/wiki/License
+ * @license http://code.google.com/p/dropbox-php/wiki/License MIT
  */
 
 /**

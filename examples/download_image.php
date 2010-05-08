@@ -7,10 +7,8 @@ $consumerSecret = '';
 include 'Dropbox/autoload.php';
 
 session_start();
-
 $dropbox = new Dropbox_API($consumerKey, $consumerSecret);
 
-header('Content-Type: text/plain');
-
-print_r($dropbox->getAccountInfo());
+header('Content-Type: image/jpeg');
+echo $dropbox->getFile('flower.jpg');
 
