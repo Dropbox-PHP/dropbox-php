@@ -1,7 +1,8 @@
 <?php
 
-$consumerKey = 'noissdi62q3eb1g';
-$consumerSecret = '8ufccwnxrfibhkd';
+/* Please supply your own consumer key and consumer secret */
+$consumerKey = '';
+$consumerSecret = '';
 
 include 'Dropbox/OAuth.php';
 include 'Dropbox/API.php';
