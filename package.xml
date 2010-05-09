@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-    http://pear.php.net/dtd/tasks-1.0.xsd
-    http://pear.php.net/dtd/package-2.0
-    http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Dropbox</name>
  <channel>pear.sabredav.org</channel>
  <summary>Dropbox API library for PHP</summary>
@@ -16,9 +13,9 @@ Requires oauth and json</description>
   <active>yes</active>
  </lead>
  <date>2010-05-08</date>
- <time>09:51:54</time>
+ <time>11:06:31</time>
  <version>
-  <release>0.1.0</release>
+  <release>0.1.1</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -27,11 +24,11 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-First release
+Automatically trimming double slashes from path
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="41de96477742ca507ddd03e708fcad47" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="e4ea0b5e3c979793bac05dd66f39fa2e" name="Dropbox/API.php" role="php" />
    <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
    <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
    <file baseinstalldir="." md5sum="a50f2499a3a2dbb85e0f37cb6256dcdc" name="Dropbox/OAuth.php" role="php" />
@@ -69,6 +66,21 @@ First release
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 First release
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.1.1</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2010-05-08</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Automatically trimming double slashes from path. Fixed error output
    </notes>
   </release>
  </changelog>
