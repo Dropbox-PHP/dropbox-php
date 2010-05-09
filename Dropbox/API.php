@@ -72,22 +72,24 @@ class Dropbox_API {
     public function getFile($path = '', $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        return $this->auth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . $path);
+        return $this->auth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
 
     }
 
     /**
      * Uploads a new file
      *
-     * TODO: currently broken
-     * 
-     * @param string $path Target path 
+     * @param string $path Target path (including filename) 
      * @param string $file Either a path to a file or a stream resource 
      * @param string $root Use this to override the default root path (sandbox/dropbox)  
      * @return bool 
      */
     public function putFile($path, $file, $root = null) {
 
+        $directory = dirname($path);
+        $filename = basename($path);
+
+        if($directory==='.') $directory = '';
         if (is_null($root)) $root = $this->root;
 
         if (is_string($file)) {
@@ -100,7 +102,7 @@ class Dropbox_API {
             
         }
 
-        return $this->multipartFetch('http://api-content.dropbox.com/0/files/' . $root . '/' . $path, array('file' => $file));
+        return $this->multipartFetch('http://api-content.dropbox.com/0/files/' . $root . '/' . trim($directory,'/'), $file, $filename);
     }
 
 
@@ -187,7 +189,7 @@ class Dropbox_API {
 
         if (is_null($root)) $root = $this->root;
         
-        $response = $this->auth->fetch('links/' . $root . '/' . $path);
+        $response = $this->auth->fetch('links/' . $root . '/' . ltrim($path,'/'));
         return json_decode($response);
 
     }
@@ -213,7 +215,7 @@ class Dropbox_API {
         if (!is_null($hash)) $args['hash'] = $hash; 
         if (!is_null($fileLimit)) $args['file_limit'] = $hash; 
 
-        $response = $this->auth->fetch('metadata/' . $root . '/' . $path); 
+        $response = $this->auth->fetch('metadata/' . $root . '/' . ltrim($path,'/')); 
         return json_decode($response);
 
     } 
@@ -229,7 +231,7 @@ class Dropbox_API {
     public function getThumbnail($path, $size = 'small', $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->auth->fetch('http://api-content.dropbox.com/0/thumbnails/' . $root . '/' . $path,array('size' => $size));
+        $response = $this->auth->fetch('http://api-content.dropbox.com/0/thumbnails/' . $root . '/' . ltrim($path,'/'),array('size' => $size));
 
         return json_decode($response);
 
@@ -242,7 +244,7 @@ class Dropbox_API {
      * @param array $arguments 
      * @return bool 
      */
-    protected function multipartFetch($uri,$arguments) {
+    protected function multipartFetch($uri, $file, $filename) {
 
         /* random string */
         $boundary = 'R50hrfBj5JYyfR3vF3wR96GPCC9Fd2q2pVMERvEaOE3D8LZTgLLbRpNwXek3';
@@ -251,25 +253,17 @@ class Dropbox_API {
             'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
         );
 
-        $body = '';
-        foreach($arguments as $argName => $argValue) {
-
-            $body.="--" . $boundary . "\r\n";
-            if (is_scalar($argValue)) {
-                $body.="Content-Disposition: form-data; name=" . $argName . "\r\n";
-                $body.="\r\n";
-                $body.=$argValue;
-            } elseif(is_resource($argValue)) {
-                $body.="Content-Disposition: form-data; name=" . $argName . "; filename=blob.data\r\n";
-                $body.="Content-type: application/octet-stream\r\n";
-                $body.="\r\n";
-                $body.=stream_get_contents($argValue);
-            }
-            $body.="\r\n";
-
-        }
+        $body="--" . $boundary . "\r\n";
+        $body.="Content-Disposition: form-data; name=file; filename=".$filename."\r\n";
+        $body.="Content-type: application/octet-stream\r\n";
+        $body.="\r\n";
+        $body.=stream_get_contents($file);
+        $body.="\r\n";
         $body.="--" . $boundary . "--";
 
+        // Dropbox requires the filename to also be part of the regular arguments, so it becomes
+        // part of the signature. 
+        $uri.='?file=' . $filename;
         return $this->auth->fetch($uri, $body, 'POST', $headers);
 
     }

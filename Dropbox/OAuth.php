@@ -111,8 +111,6 @@ class Dropbox_OAuth {
                     throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
                 default:
                     // rethrowing
-                    echo $e->lastResponse . "<br />";
-                    var_dump($lastResponseInfo);
                     throw $e;
             }
 
