@@ -22,7 +22,15 @@ class Dropbox_OAuth {
      * @var string
      */
     public $baseUri = 'http://api.dropbox.com/0/';
-   
+
+    /**
+     * After a user has authorized access, dropbox can redirect the user back
+     * to this url.
+     * 
+     * @var string
+     */
+    public $callbackUrl = null; 
+
     /**
      * OAuth object
      *
@@ -41,11 +49,12 @@ class Dropbox_OAuth {
      * @param string $consumerKey 
      * @param string$consumerSecret 
      */
-    public function __construct($consumerKey, $consumerSecret) {
+    public function __construct($consumerKey, $consumerSecret, $callbackUrl) {
 
         $this->OAuth = new OAuth($consumerKey, $consumerSecret,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
         $this->OAuth->enableDebug();
         $this->_SESSION =& $_SESSION; 
+        $this->callbackUrl = $callbackUrl;
 
     }
 
@@ -58,7 +67,8 @@ class Dropbox_OAuth {
      * The first time it will request request tokens. The second time it will redirect the
      * user to the permission page. Subsequent times will simply set up the 
      * oauth object.
-     * 
+     *
+     * @param string $redirectUrl 
      * @return void
      */
     public function setup() {
@@ -126,7 +136,11 @@ class Dropbox_OAuth {
     public function request_token() {
 
         if (!isset($this->_SESSION['dropbox_oauth_token'])) {
-            $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token');
+            if (is_null($this->callbackUrl)) {
+                $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token');
+            } else {
+                $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token', $this->callbackUrl);
+            }
             $this->_SESSION['dropbox_state'] = 0; 
             $this->_SESSION['dropbox_token'] = $tokens['oauth_token'];
             $this->_SESSION['dropbox_secret'] = $tokens['oauth_token_secret'];

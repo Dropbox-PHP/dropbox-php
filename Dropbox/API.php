@@ -39,13 +39,13 @@ class Dropbox_API {
      * 
      * @param string $consumerKey OAuth consumer key 
      * @param string $consumerSecret OAuth secret key 
+     * @param string $root Callback url.
      * @param string $root default root path (sandbox or dropbox) 
      */
-    public function __construct($consumerKey, $consumerSecret, $root = self::ROOT_SANDBOX) {
+    public function __construct($consumerKey, $consumerSecret, $callbackUrl = null, $root = self::ROOT_SANDBOX) {
 
-        $this->auth = new Dropbox_OAuth($consumerKey, $consumerSecret);
+        $this->auth = new Dropbox_OAuth($consumerKey, $consumerSecret, $callbackUrl);
         $this->auth->setup();
-
         $this->root = $root;
 
     }
