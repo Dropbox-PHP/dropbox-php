@@ -29,7 +29,7 @@ class Dropbox_OAuth {
      * 
      * @var string
      */
-    public $callbackUrl = null; 
+    public $authorizeCallbackUrl = null; 
 
     /**
      * OAuth object
@@ -49,12 +49,12 @@ class Dropbox_OAuth {
      * @param string $consumerKey 
      * @param string$consumerSecret 
      */
-    public function __construct($consumerKey, $consumerSecret, $callbackUrl) {
+    public function __construct($consumerKey, $consumerSecret, $authorizeCallbackUrl) {
 
         $this->OAuth = new OAuth($consumerKey, $consumerSecret,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
         $this->OAuth->enableDebug();
         $this->_SESSION =& $_SESSION; 
-        $this->callbackUrl = $callbackUrl;
+        $this->authorizeCallbackUrl = $authorizeCallbackUrl;
 
     }
 
@@ -136,11 +136,7 @@ class Dropbox_OAuth {
     public function request_token() {
 
         if (!isset($this->_SESSION['dropbox_oauth_token'])) {
-            if (is_null($this->callbackUrl)) {
-                $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token');
-            } else {
-                $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token', $this->callbackUrl);
-            }
+            $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token');
             $this->_SESSION['dropbox_state'] = 0; 
             $this->_SESSION['dropbox_token'] = $tokens['oauth_token'];
             $this->_SESSION['dropbox_secret'] = $tokens['oauth_token_secret'];
@@ -155,6 +151,7 @@ class Dropbox_OAuth {
 
         $this->request_token();
         $uri = $this->baseUri . 'oauth/authorize?oauth_token=' . $this->_SESSION['dropbox_token'];
+        if ($this->authorizeCallbackUrl) $uri.='&oauth_callback=' . $this->authorizeCallbackUrl;
         $this->_SESSION['dropbox_state'] = 1;
         header('Location: ' . $uri);
         exit();
