@@ -12,11 +12,11 @@ Requires oauth and json</description>
   <email>evert@rooftopsolutions.nl</email>
   <active>yes</active>
  </lead>
- <date>2010-05-09</date>
- <time>09:42:36</time>
+ <date>2010-05-10</date>
+ <time>06:22:44</time>
  <version>
-  <release>0.1.2</release>
-  <api>0.1.0</api>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -24,18 +24,19 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-Uploading now works
+Added support for a callback url, for a more streamlined user experience
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="bd1aeff21d6782a2fa945bed52f4febb" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="86f3db740700cb5da04ee645de7cb236" name="Dropbox/API.php" role="php" />
    <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
    <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
-   <file baseinstalldir="." md5sum="25a92ada3389d86d3ca213419eb7bfcf" name="Dropbox/OAuth.php" role="php" />
+   <file baseinstalldir="." md5sum="94534fae982f6bae1e4a542bd847284e" name="Dropbox/OAuth.php" role="php" />
    <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
    <file baseinstalldir="." md5sum="ae09cf4aba398ff9aa14c2f8e7280349" name="examples/accountinfo.php" role="doc" />
    <file baseinstalldir="." md5sum="da9f860f46968cec0d75d193de24d88d" name="examples/download_image.php" role="doc" />
    <file baseinstalldir="." md5sum="92861f0a4e6d3aeb749f79a93a1b5ed6" name="examples/uploading.php" role="doc" />
+   <file baseinstalldir="." md5sum="389aaea70361c5abda171188d1974d14" name="example.php" role="php" />
    <file baseinstalldir="." md5sum="0263e06418c75779afe4ca23bc02d2b8" name="LICENSE" role="doc" />
   </dir>
  </contents>
@@ -97,6 +98,21 @@ Automatically trimming double slashes from path. Fixed error output
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Uploading now works
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2010-05-10</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Added support for a callback url, for a more streamlined user experience
    </notes>
   </release>
  </changelog>
