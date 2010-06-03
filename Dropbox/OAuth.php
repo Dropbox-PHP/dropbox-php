@@ -11,17 +11,12 @@
 
 
 /**
- * This class is used to sign all requests to dorpbox
- * It's mostly a convenience wrapper around the oath extension
+ * This class is an abstract OAuth class.
+ *
+ * It must be extended by classes who wish to provide OAuth functionality
+ * using different libraries.
  */
-class Dropbox_OAuth {
-
-    /**
-     * BaseURI to dropbox api 
-     * 
-     * @var string
-     */
-    public $baseUri = 'http://api.dropbox.com/0/';
+abstract class Dropbox_OAuth {
 
     /**
      * After a user has authorized access, dropbox can redirect the user back
@@ -30,31 +25,86 @@ class Dropbox_OAuth {
      * @var string
      */
     public $authorizeCallbackUrl = null; 
+   
+    /**
+     * The user has not yet authorized access
+     */
+    const STATE_UNAUTHORIZED = 0;
 
     /**
-     * OAuth object
-     *
-     * @var OAuth
+     * The user is redirect to authorize dropbox access
      */
-    protected $oAuth;
+    const STATE_USERAUTHORIZING = 1;
+    const STATE_AUTHORIZED = 2;
 
     /**
-     * Reference to session
+     * The currente authentication state 
+     * 
+     * @var int 
      */
-    public $_SESSION;
+    protected $currentState = self::STATE_UNAUTHORIZED;
+
+    /**
+     * Uri used to fetch request tokens 
+     * 
+     * @var string
+     */
+    const URI_REQUEST_TOKEN = 'http://api.dropbox.com/0/oauth/request_token';
+
+    /**
+     * Uri used to redirect the user to for authorization.
+     * 
+     * @var string
+     */
+    const URI_AUTHORIZE = 'http://api.dropbox.com/0/oauth/authorize';
+
+    /**
+     * Uri used to 
+     * 
+     * @var string
+     */
+    const URI_ACCESS_TOKEN = 'http://api.dropbox.com/0/oauth/access_token';
+
+    /**
+     * An OAuth request token. 
+     * 
+     * @var string 
+     */
+    protected $oauth_token = null;
+
+    /**
+     * OAuth token secret 
+     * 
+     * @var string 
+     */
+    protected $oauth_token_secret = null;
+
 
     /**
      * Constructor
      * 
      * @param string $consumerKey 
-     * @param string$consumerSecret 
+     * @param string $consumerSecret 
      */
-    public function __construct($consumerKey, $consumerSecret, $authorizeCallbackUrl) {
+    abstract public function __construct($consumerKey, $consumerSecret);
 
-        $this->OAuth = new OAuth($consumerKey, $consumerSecret,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
-        $this->OAuth->enableDebug();
-        $this->_SESSION =& $_SESSION; 
-        $this->authorizeCallbackUrl = $authorizeCallbackUrl;
+    public function saveState() {
+
+        $_SESSION['dropbox'] = array(
+            'oauth_token' => $this->oauth_token,
+            'oauth_token_secret' => $this->oauth_token_secret,
+            'state' => $this->currentState,
+        );
+
+    }
+
+    public function loadState() {
+
+        if (isset($_SESSION['dropbox'])) {
+            $this->oauth_token = isset($_SESSION['dropbox']['oauth_token'])?$_SESSION['dropbox']['oauth_token']:null;
+            $this->oauth_token_secret = isset($_SESSION['dropbox']['oauth_token_secret'])?$_SESSION['dropbox']['oauth_token_secret']:null;
+            $this->currentState = isset($_SESSION['dropbox']['state'])?$_SESSION['dropbox']['state']:null;
+        }
 
     }
 
@@ -73,19 +123,29 @@ class Dropbox_OAuth {
      */
     public function setup() {
 
-        if (!isset($this->_SESSION['dropbox_state'])) $this->_SESSION['dropbox_state'] = 0;
+        $this->loadState();
+        switch($this->currentState) {
 
-        switch($this->_SESSION['dropbox_state']) {
+            case self::STATE_UNAUTHORIZED :
+                $tokens = $this->request_token();
+                $this->oauth_token = $tokens['oauth_token'];
+                $this->oauth_token_secret = $tokens['oauth_token_secret'];
 
-            case 0:
-                $this->authorize();
+                // Building the redirect uri
+                $uri = self::URI_AUTHORIZE . '?oauth_token=' . $this->oauth_token;
+                if ($this->authorizeCallbackUrl) $uri.='&oauth_callback=' . $this->authorizeCallbackUrl;
+                $this->currentState = self::STATE_USERAUTHORIZING;
+
+                $this->saveState();
+                header('Location: ' . $uri);
+                exit();
                 break;
-            case 1:
-                $this->access_token();
-                //Note: the lack of a break statement is intentional
-            case 2:
-                $this->OAuth->setToken($this->_SESSION['dropbox_token'],$this->_SESSION['dropbox_secret']);
-                break;
+            case self::STATE_USERAUTHORIZING :
+                $tokens = $this->access_token($this->oauth_token, $this->oauth_token_secret);
+                $this->oauth_token = $tokens['oauth_token'];
+                $this->oauth_token_secret = $tokens['oauth_token_secret'];
+                $this->currentState = self::STATE_AUTHORIZED;
+                $this->saveState();
 
         }
 
@@ -100,79 +160,31 @@ class Dropbox_OAuth {
      * @param array $httpHeaders 
      * @return string 
      */
-    public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()) {
-
-        if (strpos($uri,'http://')!==0 && strpos($uri,'https://')!==0) {
-            $uri = $this->baseUri . $uri;
-        } else {
-           // $uri = 'http://localhost:61783/~evert2/code/dropbox/bla.php/' . $uri;
-        }
-
-        try { 
-            $this->OAuth->fetch($uri, $arguments, $method, $httpHeaders);
-            $result = $this->OAuth->getLastResponse();
-            return $result;
-        } catch (OAuthException $e) {
-
-            $lastResponseInfo = $this->OAuth->getLastResponseInfo();
-            switch($lastResponseInfo['http_code']) {
-
-                case 404 : 
-                    throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
-                default:
-                    // rethrowing
-                    throw $e;
-            }
-
-        }
-
-    }
+    public abstract function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()); 
 
     /**
-     * Requests the OAuth request token 
+     * Requests the OAuth request token.
+     *
+     * This method must return an array with 2 elements:
+     *   * oauth_token
+     *   * oauth_token_secret
      * 
-     * @return void 
+     * @return array 
      */
-    public function request_token() {
-
-        if (!isset($this->_SESSION['dropbox_oauth_token'])) {
-            $tokens = $this->OAuth->getRequestToken($this->baseUri . 'oauth/request_token');
-            $this->_SESSION['dropbox_state'] = 0; 
-            $this->_SESSION['dropbox_token'] = $tokens['oauth_token'];
-            $this->_SESSION['dropbox_secret'] = $tokens['oauth_token_secret'];
-        }
-
-    }
+    abstract public function request_token(); 
 
     /**
-     * Redirects the user to the authorization url
+     * Requests the OAuth access tokens.
+     *
+     * This method requires the 'unauthorized' request tokens
+     * and, if successful will return the authorized request tokens.
+     * 
+     * This method must return an array with 2 elements:
+     *   * oauth_token
+     *   * oauth_token_secret
+     *
+     * @return array
      */
-    public function authorize() {
-
-        $this->request_token();
-        $uri = $this->baseUri . 'oauth/authorize?oauth_token=' . $this->_SESSION['dropbox_token'];
-        if ($this->authorizeCallbackUrl) $uri.='&oauth_callback=' . $this->authorizeCallbackUrl;
-        $this->_SESSION['dropbox_state'] = 1;
-        header('Location: ' . $uri);
-        exit();
-
-    }
-
-    /**
-     * Fetches an access token
-     */
-    public function access_token() {
-
-        $uri = $this->baseUri . 'oauth/access_token';
-        
-        $this->OAuth->setToken($this->_SESSION['dropbox_token'],$this->_SESSION['dropbox_secret']);
-        $tokens = $this->OAuth->getAccessToken($uri);
-
-        $this->_SESSION['dropbox_state'] = 2;
-        $this->_SESSION['dropbox_token'] = $tokens['oauth_token'];
-        $this->_SESSION['dropbox_secret'] = $tokens['oauth_token_secret'];
-
-    }
-
+    abstract public function access_token($oauth_token, $oauth_token_secret); 
 
 }
