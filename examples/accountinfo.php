@@ -8,7 +8,13 @@ include 'Dropbox/autoload.php';
 
 session_start();
 
-$dropbox = new Dropbox_API($consumerKey, $consumerSecret);
+$oauth = new Dropbox_OAuth_PHP($consumerKey, $consumerSecret);
+
+// If the PHP OAuth extension is not available, you can try
+// PEAR's HTTP_OAUTH instead.
+// $oauth = new Dropbox_OAuth_PEAR($consumerKey, $consumerSecret);
+
+$dropbox = new Dropbox_API($oauth);
 
 header('Content-Type: text/plain');
 
