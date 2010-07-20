@@ -184,6 +184,8 @@ class Dropbox_API {
      */
     public function getLinks($path, $root = null) {
 
+        throw new Dropbox_Exception('This API method is currently broken, and dropbox documentation about this is no longer online. Please ask Dropbox support if you really need this.');
+
         if (is_null($root)) $root = $this->root;
         
         $response = $this->oauth->fetch('http://api.dropbox.com/0/links/' . $root . '/' . ltrim($path,'/'));

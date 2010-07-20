@@ -84,7 +84,7 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
         if (is_array($arguments)) {
             $parameters = array_merge($parameters,$arguments);
         } elseif (is_string($arguments)) {
-            throw new Dropbox_Exception('Custom request bodies are not yet supported with PEAR\'s HTTP_OAuth package. Unfortunately this disables the ability to upload any files.');
+            $consumerRequest->setBody($arguments);
         }
         $consumerRequest->setParameters($parameters);
 
