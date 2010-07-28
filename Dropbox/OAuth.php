@@ -88,66 +88,41 @@ abstract class Dropbox_OAuth {
      */
     abstract public function __construct($consumerKey, $consumerSecret);
 
-    public function saveState() {
+    /**
+     * Sets the request token and secret.
+     *
+     * The tokens can also be passed as an array into the first argument.
+     * The array must have the elements token and token_secret.
+     * 
+     * @param string|array $token 
+     * @param string $token_secret 
+     * @return void
+     */
+    public function setToken($token, $token_secret = null) {
 
-        $_SESSION['dropbox'] = array(
-            'oauth_token' => $this->oauth_token,
-            'oauth_token_secret' => $this->oauth_token_secret,
-            'state' => $this->currentState,
-        );
-
-    }
-
-    public function loadState() {
-
-        if (isset($_SESSION['dropbox'])) {
-            $this->oauth_token = isset($_SESSION['dropbox']['oauth_token'])?$_SESSION['dropbox']['oauth_token']:null;
-            $this->oauth_token_secret = isset($_SESSION['dropbox']['oauth_token_secret'])?$_SESSION['dropbox']['oauth_token_secret']:null;
-            $this->currentState = isset($_SESSION['dropbox']['state'])?$_SESSION['dropbox']['state']:null;
+        if (is_array($token)) {
+            $this->oauth_token = $token['token'];
+            $this->oauth_token_secret = $token['token_secret'];
+        } else {
+            $this->oauth_token = $token;
+            $this->oauth_token_secret = $token_secret;
         }
 
     }
 
     /**
-     * Sets up authentication
+     * Returns the oauth request tokens as an associative array.
      *
-     * Note that this method will need to be called multiple times for the 
-     * different authentication steps.
-     *
-     * The first time it will request request tokens. The second time it will redirect the
-     * user to the permission page. Subsequent times will simply set up the 
-     * oauth object.
-     *
-     * @param string $redirectUrl 
-     * @return void
+     * The array will contain the elements 'token' and 'token_secret'.
+     * 
+     * @return array 
      */
-    public function setup() {
+    public function getToken() {
 
-        $this->loadState();
-        switch($this->currentState) {
-
-            case self::STATE_UNAUTHORIZED :
-                $tokens = $this->request_token();
-                $this->oauth_token = $tokens['oauth_token'];
-                $this->oauth_token_secret = $tokens['oauth_token_secret'];
-
-                // Building the redirect uri
-                $uri = self::URI_AUTHORIZE . '?oauth_token=' . $this->oauth_token;
-                if ($this->authorizeCallbackUrl) $uri.='&oauth_callback=' . $this->authorizeCallbackUrl;
-                $this->currentState = self::STATE_USERAUTHORIZING;
-
-                $this->saveState();
-                header('Location: ' . $uri);
-                exit();
-                break;
-            case self::STATE_USERAUTHORIZING :
-                $tokens = $this->access_token($this->oauth_token, $this->oauth_token_secret);
-                $this->oauth_token = $tokens['oauth_token'];
-                $this->oauth_token_secret = $tokens['oauth_token_secret'];
-                $this->currentState = self::STATE_AUTHORIZED;
-                $this->saveState();
-
-        }
+        return array(
+            'token' => $this->oauth_token,
+            'token_secret' => $this->oauth_token_secret,
+        );
 
     }
 
@@ -164,10 +139,6 @@ abstract class Dropbox_OAuth {
 
     /**
      * Requests the OAuth request token.
-     *
-     * This method must return an array with 2 elements:
-     *   * oauth_token
-     *   * oauth_token_secret
      * 
      * @return array 
      */
@@ -176,15 +147,8 @@ abstract class Dropbox_OAuth {
     /**
      * Requests the OAuth access tokens.
      *
-     * This method requires the 'unauthorized' request tokens
-     * and, if successful will return the authorized request tokens.
-     * 
-     * This method must return an array with 2 elements:
-     *   * oauth_token
-     *   * oauth_token_secret
-     *
      * @return array
      */
-    abstract public function access_token($oauth_token, $oauth_token_secret); 
+    abstract public function access_token(); 
 
 }

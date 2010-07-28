@@ -48,6 +48,34 @@ class Dropbox_API {
     }
 
     /**
+     * Returns OAuth tokens based on an email address and passwords
+     *
+     * This can be used to bypass the regular oauth workflow.
+     *
+     * This method returns an array with 2 elements:
+     *   * token
+     *   * secret
+     *
+     * @param string $email 
+     * @param string $password 
+     * @return array 
+     */
+    public function getToken($email, $password) {
+
+        $data = $this->oauth->fetch('http://api.dropbox.com/0/token', array(
+            'email' => $email, 
+            'password' => $password
+        ),'POST');
+
+        $data = json_decode($data); 
+        return array(
+            'token' => $data->token,
+            'token_secret' => $data->secret,
+        );
+
+    }
+
+    /**
      * Returns information about the current dropbox account 
      * 
      * @return stdclass 
@@ -55,7 +83,7 @@ class Dropbox_API {
     public function getAccountInfo() {
 
         $data = $this->oauth->fetch('http://api.dropbox.com/0/account/info');
-        return json_decode($data);
+        return json_decode($data,true);
 
     }
 
