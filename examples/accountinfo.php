@@ -18,5 +18,14 @@ $dropbox = new Dropbox_API($oauth);
 
 header('Content-Type: text/plain');
 
-print_r($dropbox->getAccountInfo());
+$tokens = $dropbox->getToken('mrhandsome@example.org', 'secretpassword'); 
 
+echo "Tokens:\n";
+print_r($tokens);
+
+// Note that it's wise to save these tokens for re-use.
+$oauth->setToken($tokens);
+
+echo "Account info:\n";
+
+print_r($dropbox->getAccountInfo());

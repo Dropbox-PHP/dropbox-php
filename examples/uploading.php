@@ -15,6 +15,18 @@ $oauth = new Dropbox_OAuth_PHP($consumerKey, $consumerSecret);
 
 $dropbox = new Dropbox_API($oauth);
 
+header('Content-Type: text/plain');
+
+$tokens = $dropbox->getToken('mrhandsome@example.org', 'secretpassword'); 
+
+echo "Tokens:\n";
+print_r($tokens);
+
+// Note that it's wise to save these tokens for re-use.
+$oauth->setToken($tokens);
+
+echo "Uploading\n";
+
 /* This script uploads itself */
 if($dropbox->putFile(basename(__FILE__), __FILE__)) {
  

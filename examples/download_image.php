@@ -15,6 +15,13 @@ $oauth = new Dropbox_OAuth_PHP($consumerKey, $consumerSecret);
 
 $dropbox = new Dropbox_API($oauth);
 
+header('Content-Type: text/plain');
+
+$tokens = $dropbox->getToken('mrhandsome@example.org', 'secretpassword'); 
+
+// Note that it's wise to save these tokens for re-use.
+$oauth->setToken($tokens);
+
 header('Content-Type: image/jpeg');
 echo $dropbox->getFile('flower.jpg');
 
