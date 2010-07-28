@@ -12,11 +12,11 @@ Requires oauth and json</description>
   <email>evert@rooftopsolutions.nl</email>
   <active>yes</active>
  </lead>
- <date>2010-07-20</date>
- <time>23:41:40</time>
+ <date>2010-07-28</date>
+ <time>22:58:34</time>
  <version>
-  <release>0.3.0</release>
-  <api>0.3.0</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -24,21 +24,26 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL extension
+The API is refactored quite a bit.
+There is now support for creating new accounts, and requesting oauth tokens based on a username/password combo.
+The regular oauth authentication method is still supported, but the responsibility of the process is moved
+to the developer. This way it will be easier for a developer to storage the oauth tokens.
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="af509cd8cd84f7ba1d49fd154d19a8d7" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="881c56f697f8ad58fa63d554f05c58fb" name="Dropbox/API.php" role="php" />
    <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
    <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
-   <file baseinstalldir="." md5sum="e507a830687ae14009b751f4cec2087e" name="Dropbox/OAuth.php" role="php" />
+   <file baseinstalldir="." md5sum="41b2c33d8c8f5bec0ca466778c7a3dcc" name="Dropbox/OAuth.php" role="php" />
    <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
    <file baseinstalldir="." md5sum="bf9b9b3179f8e96838a041cd03a463a0" name="Dropbox/Exception/RequestToken.php" role="php" />
-   <file baseinstalldir="." md5sum="28340364984fceb3afbe80e9b2ec208a" name="Dropbox/OAuth/PEAR.php" role="php" />
-   <file baseinstalldir="." md5sum="bd02b2b29f9d07b03e8ec27296fda309" name="Dropbox/OAuth/PHP.php" role="php" />
-   <file baseinstalldir="." md5sum="d0d3e23c1c74900b03053c2ff0c23940" name="examples/accountinfo.php" role="doc" />
-   <file baseinstalldir="." md5sum="9a9fbede15ebc487caa8171e7eb58bea" name="examples/download_image.php" role="doc" />
-   <file baseinstalldir="." md5sum="a1b0603e4180446b5debc4b720334587" name="examples/uploading.php" role="doc" />
+   <file baseinstalldir="." md5sum="5c64e69712e10f20fa6d77afa52a2ab0" name="Dropbox/OAuth/PEAR.php" role="php" />
+   <file baseinstalldir="." md5sum="7d891e63ac9dbb897465b4eee0c5354d" name="Dropbox/OAuth/PHP.php" role="php" />
+   <file baseinstalldir="." md5sum="5ee823233bc15db009ecc06d7abd24f3" name="examples/accountinfo.php" role="doc" />
+   <file baseinstalldir="." md5sum="94c05e563b68243db5d6ec49fe902d05" name="examples/createaccount.php" role="doc" />
+   <file baseinstalldir="." md5sum="cefc917f9d446945f2e939e01d65fa08" name="examples/download_image.php" role="doc" />
+   <file baseinstalldir="." md5sum="81cf80418537f1e315fde633f97f2ffe" name="examples/oauth_workflow.php" role="doc" />
+   <file baseinstalldir="." md5sum="61d55c115a49a448e3f3dac4d4dce200" name="examples/uploading.php" role="doc" />
    <file baseinstalldir="." md5sum="0263e06418c75779afe4ca23bc02d2b8" name="LICENSE" role="doc" />
   </dir>
  </contents>
@@ -137,6 +142,24 @@ Added support for a callback url, for a more streamlined user experience
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL extension
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2010-07-28</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+The API is refactored quite a bit.
+There is now support for creating new accounts, and requesting oauth tokens based on a username/password combo.
+The regular oauth authentication method is still supported, but the responsibility of the process is moved
+to the developer. This way it will be easier for a developer to storage the oauth tokens.
    </notes>
   </release>
  </changelog>
