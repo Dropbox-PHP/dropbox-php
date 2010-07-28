@@ -40,7 +40,7 @@ class Dropbox_API {
      * @param Dropbox_OAuth Dropbox_Auth object
      * @param string $root default root path (sandbox or dropbox) 
      */
-    public function __construct(Dropbox_OAuth $oauth, $root = self::ROOT_SANDBOX) {
+    public function __construct(Dropbox_OAuth $oauth, $root = self::ROOT_DROPBOX) {
 
         $this->oauth = $oauth;
         $this->oauth->setup();
