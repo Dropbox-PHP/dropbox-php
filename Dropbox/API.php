@@ -43,7 +43,6 @@ class Dropbox_API {
     public function __construct(Dropbox_OAuth $oauth, $root = self::ROOT_DROPBOX) {
 
         $this->oauth = $oauth;
-        $this->oauth->setup();
         $this->root = $root;
 
     }
@@ -59,6 +58,29 @@ class Dropbox_API {
         return json_decode($data);
 
     }
+
+    /**
+     * Creates a new Dropbox account
+     *
+     * @param string $email 
+     * @param string $first_name 
+     * @param string $last_name 
+     * @param string $password 
+     * @return bool 
+     */
+    public function createAccount($email, $first_name, $last_name, $password) {
+
+        $result = $this->oauth->fetch('http://api.dropbox.com/0/account',array(
+            'email'      => $email,
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'password'   => $password,
+          ), 'POST');
+
+        return $result==='OK'; 
+
+    }
+
 
     /**
      * Returns a file's contents 
