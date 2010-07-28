@@ -120,10 +120,11 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
      * 
      * @return void
      */
-    public function request_token() {
+    public function getRequestToken() {
         
         $this->OAuth->getRequestToken(self::URI_REQUEST_TOKEN);
         $this->setToken($this->OAuth->getToken(), $this->OAuth->getTokenSecret());
+        return $this->getToken();
 
     }
 
@@ -135,10 +136,11 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
      * 
      * @return void 
      */
-    public function access_token() {
+    public function getAccessToken(); 
 
         $this->OAuth->getAccessToken(self::URI_ACCESS_TOKEN);
         $this->setToken($this->OAuth->getToken(), $this->OAuth->getTokenSecret());
+        return $this->getToken();
 
     }
 

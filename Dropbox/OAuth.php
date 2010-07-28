@@ -27,24 +27,6 @@ abstract class Dropbox_OAuth {
     public $authorizeCallbackUrl = null; 
    
     /**
-     * The user has not yet authorized access
-     */
-    const STATE_UNAUTHORIZED = 0;
-
-    /**
-     * The user is redirect to authorize dropbox access
-     */
-    const STATE_USERAUTHORIZING = 1;
-    const STATE_AUTHORIZED = 2;
-
-    /**
-     * The currente authentication state 
-     * 
-     * @var int 
-     */
-    protected $currentState = self::STATE_UNAUTHORIZED;
-
-    /**
      * Uri used to fetch request tokens 
      * 
      * @var string
@@ -127,6 +109,21 @@ abstract class Dropbox_OAuth {
     }
 
     /**
+     * Returns the authorization url
+     * 
+     * @param string $callBack Specify a callback url to automatically redirect the user back 
+     * @return string 
+     */
+    public function getAuthorizeUrl($callBack = null) {
+        
+        // Building the redirect uri
+        $token = $this->getToken();
+        $uri = self::URI_AUTHORIZE . '?oauth_token=' . $token['token'];
+        if ($callBack) $uri.='&oauth_callback=' . $callBack;
+        return $uri;
+    }
+
+    /**
      * Fetches a secured oauth url and returns the response body. 
      * 
      * @param string $uri 
@@ -142,13 +139,13 @@ abstract class Dropbox_OAuth {
      * 
      * @return array 
      */
-    abstract public function request_token(); 
+    abstract public function getRequestToken(); 
 
     /**
      * Requests the OAuth access tokens.
      *
      * @return array
      */
-    abstract public function access_token(); 
+    abstract public function getAccessToken(); 
 
 }

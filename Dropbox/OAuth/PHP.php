@@ -94,12 +94,13 @@ class Dropbox_OAuth_PHP extends Dropbox_OAuth {
      *
      * @return void 
      */
-    public function request_token() {
+    public function getRequestToken() {
         
         try {
 
             $tokens = $this->OAuth->getRequestToken(self::URI_REQUEST_TOKEN);
             $this->setToken($tokens['oauth_token'], $tokens['oauth_token_secret']);
+            return $this->getToken();
 
         } catch (OAuthException $e) {
 
@@ -118,11 +119,12 @@ class Dropbox_OAuth_PHP extends Dropbox_OAuth {
      * 
      * @return void 
      */
-    public function access_token() {
+    public function getAccessToken() {
 
         $uri = self::URI_ACCESS_TOKEN;
         $tokens = $this->OAuth->getAccessToken($uri);
         $this->setToken($tokens['oauth_token'], $tokens['oauth_token_secret']);
+        return $this->getToken();
 
     }
 
