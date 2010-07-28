@@ -136,7 +136,7 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
      * 
      * @return void 
      */
-    public function getAccessToken(); 
+    public function getAccessToken() {
 
         $this->OAuth->getAccessToken(self::URI_ACCESS_TOKEN);
         $this->setToken($this->OAuth->getToken(), $this->OAuth->getTokenSecret());
