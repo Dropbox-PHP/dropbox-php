@@ -72,14 +72,29 @@ class Dropbox_OAuth_PHP extends Dropbox_OAuth {
         try { 
             $this->OAuth->fetch($uri, $arguments, $method, $httpHeaders);
             $result = $this->OAuth->getLastResponse();
-            return $result;
+            $lastResponseInfo = $this->OAuth->getLastResponseInfo();
+            return array(
+                'httpStatus' => $lastResponseInfo['http_code'],
+                'body'       => $result,
+            );
         } catch (OAuthException $e) {
 
             $lastResponseInfo = $this->OAuth->getLastResponseInfo();
             switch($lastResponseInfo['http_code']) {
 
+                  // Not modified
+                case 304 :
+                    return array(
+                        'httpStatus' => 304,
+                        'body'       => null,
+                    );
+                    break;
+                case 403 :
+                    throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
                 case 404 : 
                     throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
+                case 507 : 
+                    throw new Dropbox_Exception_OverQuota('This dropbox is full');
                 default:
                     // rethrowing
                     throw $e;

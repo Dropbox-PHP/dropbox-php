@@ -111,7 +111,29 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
         }
 
         $response = $consumerRequest->send();
-        return $response->getBody();
+
+        switch($response->getStatus()) {
+
+              // Not modified
+            case 304 :
+                return array(
+                    'httpStatus' => 304,
+                    'body'       => null,
+                );
+                break;
+            case 403 :
+                throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
+            case 404 : 
+                throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
+            case 507 : 
+                throw new Dropbox_Exception_OverQuota('This dropbox is full');
+
+        }
+
+        return array(
+            'httpStatus' => $response->getStatus(),
+            'body' => $response->getBody()
+        );
 
     }
 
