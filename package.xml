@@ -12,8 +12,8 @@ Requires oauth and json</description>
   <email>evert@rooftopsolutions.nl</email>
   <active>yes</active>
  </lead>
- <date>2010-07-28</date>
- <time>22:58:34</time>
+ <date>2010-07-29</date>
+ <time>22:32:15</time>
  <version>
   <release>0.4.0</release>
   <api>0.4.0</api>
@@ -24,24 +24,31 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-The API is refactored quite a bit.
-There is now support for creating new accounts, and requesting oauth tokens based on a username/password combo.
-The regular oauth authentication method is still supported, but the responsibility of the process is moved
-to the developer. This way it will be easier for a developer to storage the oauth tokens.
+Support for creating new accounts.
+Support for &apos;token&apos; api call, for easy authentication.
+Moved the responsibility of storing/retrieving oauth tokens to the user. Proven to be much for flexible.
+A lot more examples.
+Consistent error handling between PECL extension and PEAR package.
+Fixed responses in the API.
+Fixed retrieval of Thumbnails.
+Fixed retrieval of hash-based getMetaData.
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="881c56f697f8ad58fa63d554f05c58fb" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="da28a0d8c9bf39373b2e2ea6ecf35c89" name="Dropbox/API.php" role="php" />
    <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
    <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
    <file baseinstalldir="." md5sum="41b2c33d8c8f5bec0ca466778c7a3dcc" name="Dropbox/OAuth.php" role="php" />
+   <file baseinstalldir="." md5sum="0bdd1415ac2a781c189a4beeecc21f8a" name="Dropbox/Exception/Forbidden.php" role="php" />
    <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
+   <file baseinstalldir="." md5sum="c1f8702aea220c88c83f71cf10da22ed" name="Dropbox/Exception/OverQuota.php" role="php" />
    <file baseinstalldir="." md5sum="bf9b9b3179f8e96838a041cd03a463a0" name="Dropbox/Exception/RequestToken.php" role="php" />
-   <file baseinstalldir="." md5sum="5c64e69712e10f20fa6d77afa52a2ab0" name="Dropbox/OAuth/PEAR.php" role="php" />
-   <file baseinstalldir="." md5sum="7d891e63ac9dbb897465b4eee0c5354d" name="Dropbox/OAuth/PHP.php" role="php" />
+   <file baseinstalldir="." md5sum="ea72b0fbf54c4378285d8887f8681676" name="Dropbox/OAuth/PEAR.php" role="php" />
+   <file baseinstalldir="." md5sum="200a656801f8263e511e8d25f5d6c06e" name="Dropbox/OAuth/PHP.php" role="php" />
    <file baseinstalldir="." md5sum="5ee823233bc15db009ecc06d7abd24f3" name="examples/accountinfo.php" role="doc" />
    <file baseinstalldir="." md5sum="94c05e563b68243db5d6ec49fe902d05" name="examples/createaccount.php" role="doc" />
    <file baseinstalldir="." md5sum="cefc917f9d446945f2e939e01d65fa08" name="examples/download_image.php" role="doc" />
+   <file baseinstalldir="." md5sum="1e1ee10475114602d1573134395fd26c" name="examples/getmetadata.php" role="doc" />
    <file baseinstalldir="." md5sum="81cf80418537f1e315fde633f97f2ffe" name="examples/oauth_workflow.php" role="doc" />
    <file baseinstalldir="." md5sum="61d55c115a49a448e3f3dac4d4dce200" name="examples/uploading.php" role="doc" />
    <file baseinstalldir="." md5sum="0263e06418c75779afe4ca23bc02d2b8" name="LICENSE" role="doc" />
@@ -153,13 +160,17 @@ There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL exte
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2010-07-28</date>
+   <date>2010-07-29</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
-The API is refactored quite a bit.
-There is now support for creating new accounts, and requesting oauth tokens based on a username/password combo.
-The regular oauth authentication method is still supported, but the responsibility of the process is moved
-to the developer. This way it will be easier for a developer to storage the oauth tokens.
+Support for creating new accounts.
+Support for &apos;token&apos; api call, for easy authentication.
+Moved the responsibility of storing/retrieving oauth tokens to the user. Proven to be much for flexible.
+A lot more examples.
+Consistent error handling between PECL extension and PEAR package.
+Fixed responses in the API.
+Fixed retrieval of Thumbnails.
+Fixed retrieval of hash-based getMetaData.
    </notes>
   </release>
  </changelog>
