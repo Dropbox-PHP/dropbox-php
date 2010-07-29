@@ -282,7 +282,7 @@ class Dropbox_API {
         if (is_null($root)) $root = $this->root;
         $response = $this->oauth->fetch('http://api-content.dropbox.com/0/thumbnails/' . $root . '/' . ltrim($path,'/'),array('size' => $size));
 
-        return json_decode($response);
+        return $response;
 
     }
 
