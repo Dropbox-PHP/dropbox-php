@@ -168,7 +168,7 @@ class Dropbox_API {
         if (is_null($root)) $root = $this->root;
         $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/copy', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
 
-        return json_decode($response);
+        return json_decode($response,true);
 
     }
 
@@ -185,7 +185,7 @@ class Dropbox_API {
 
         if (is_null($root)) $root = $this->root;
         $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/create_folder', array('path' => $path, 'root' => $root));
-        return json_decode($response);
+        return json_decode($response,true);
 
     }
 
@@ -218,7 +218,7 @@ class Dropbox_API {
         if (is_null($root)) $root = $this->root;
         $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/move', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
 
-        return json_decode($response);
+        return json_decode($response,true);
 
     }
 
@@ -239,7 +239,7 @@ class Dropbox_API {
         if (is_null($root)) $root = $this->root;
         
         $response = $this->oauth->fetch('http://api.dropbox.com/0/links/' . $root . '/' . ltrim($path,'/'));
-        return json_decode($response);
+        return json_decode($response,true);
 
     }
 
@@ -264,8 +264,8 @@ class Dropbox_API {
         if (!is_null($hash)) $args['hash'] = $hash; 
         if (!is_null($fileLimit)) $args['file_limit'] = $hash; 
 
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/')); 
-        return json_decode($response);
+        $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/'), $args); 
+        return json_decode($response,true);
 
     } 
 
