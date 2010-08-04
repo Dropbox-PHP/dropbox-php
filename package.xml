@@ -12,8 +12,8 @@ Requires oauth and json</description>
   <email>evert@rooftopsolutions.nl</email>
   <active>yes</active>
  </lead>
- <date>2010-07-29</date>
- <time>22:32:15</time>
+ <date>2010-08-04</date>
+ <time>21:59:27</time>
  <version>
   <release>0.4.0</release>
   <api>0.4.0</api>
@@ -160,7 +160,7 @@ There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL exte
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2010-07-29</date>
+   <date>2010-08-04</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Support for creating new accounts.
