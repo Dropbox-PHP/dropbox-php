@@ -274,7 +274,7 @@ class Dropbox_API {
         );
 
         if (!is_null($hash)) $args['hash'] = $hash; 
-        if (!is_null($fileLimit)) $args['file_limit'] = $hash; 
+        if (!is_null($fileLimit)) $args['file_limit'] = $fileLimit; 
 
         $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/'), $args);
 
