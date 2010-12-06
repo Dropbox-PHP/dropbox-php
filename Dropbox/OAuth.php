@@ -38,7 +38,7 @@ abstract class Dropbox_OAuth {
      * 
      * @var string
      */
-    const URI_AUTHORIZE = 'http://api.dropbox.com/0/oauth/authorize';
+    const URI_AUTHORIZE = 'http://www.dropbox.com/0/oauth/authorize';
 
     /**
      * Uri used to 
