@@ -30,6 +30,7 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
      * @var string
      */
     protected $consumerKey;
+
     /**
      *
      * @var Zend_Oauth_Token
@@ -118,13 +119,6 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
          /* @var $consumerRequest Zend_Oauth_Client */
         $consumerRequest = $token->getHttpClient($oauthOptions);
         $consumerRequest->setMethod($method);
-        /*
-        if ($method == "GET") {
-           $consumerRequest->setMethod($method);
-        } else {
-            $consumerRequest->setMethod(Zend_Http_Client::POST);
-        }
-         */
         if (is_array($arguments)) {
             $consumerRequest->setUri($uri);
             if ($method == "GET") {
@@ -236,6 +230,8 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
 
     /**
      * Returns the authorization url
+     *
+     * Overloading Dropbox_OAuth to use the built in functions in Zend_Oauth
      *
      * @param string $callBack Specify a callback url to automatically redirect the user back
      * @return string
