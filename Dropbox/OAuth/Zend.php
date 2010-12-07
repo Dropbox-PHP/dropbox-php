@@ -30,7 +30,6 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
      * @var string
      */
     protected $consumerKey;
-
     /**
      *
      * @var Zend_Oauth_Token
@@ -116,7 +115,7 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
         );
         $config = array("timeout" => 15);
 
-         /* @var $consumerRequest Zend_Oauth_Client */
+        /* @var $consumerRequest Zend_Oauth_Client */
         $consumerRequest = $token->getHttpClient($oauthOptions);
         $consumerRequest->setMethod($method);
         if (is_array($arguments)) {
@@ -237,9 +236,8 @@ class Dropbox_OAuth_Zend extends Dropbox_OAuth {
      * @return string
      */
     public function getAuthorizeUrl($callBack = null) {
-        if ($callBack) {
+        if ($callBack)
             $this->OAuth->setCallbackUrl($callBack);
-        }
         return $this->OAuth->getRedirectUrl();
     }
 
