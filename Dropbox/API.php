@@ -120,6 +120,7 @@ class Dropbox_API {
     public function getFile($path = '', $root = null) {
 
         if (is_null($root)) $root = $this->root;
+        $path = implode("/", array_map('rawurlencode', explode("/", $path)));
         $result = $this->oauth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
         return $result['body'];
 
@@ -146,11 +147,14 @@ class Dropbox_API {
             $file = fopen($file,'r');
 
         } elseif (!is_resource($file)) {
-
             throw new Dropbox_Exception('File must be a file-resource or a string');
-            
         }
-        $this->multipartFetch('http://api-content.dropbox.com/0/files/' . $root . '/' . trim($directory,'/'), $file, $filename);
+        $this->multipartFetch('http://api-content.dropbox.com/0/files/' . 
+                $root . '/' . trim($directory,'/'), $file, $filename);
+        
+        if(!isset($result["httpStatus"]) || $result["httpStatus"] != 200) 
+            throw new Dropbox_Exception("Uploading file to Dropbox failed");
+
         return true;
     }
 
@@ -225,7 +229,7 @@ class Dropbox_API {
     public function move($from, $to, $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/move', array('from_path' => $from, 'to_path' => $to, 'root' => $root));
+        $response = $this->oauth->fetch('http://api.dropbox.com/0/fileops/move', array('from_path' => rawurldecode($from), 'to_path' => rawurldecode($to), 'root' => $root));
 
         return json_decode($response['body'],true);
 
@@ -276,6 +280,7 @@ class Dropbox_API {
         if (!is_null($hash)) $args['hash'] = $hash; 
         if (!is_null($fileLimit)) $args['file_limit'] = $fileLimit; 
 
+        $path = implode("/", array_map('rawurlencode', explode("/", $path)));
         $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/'), $args);
 
         /* 304 is not modified */
@@ -321,7 +326,7 @@ class Dropbox_API {
         );
 
         $body="--" . $boundary . "\r\n";
-        $body.="Content-Disposition: form-data; name=file; filename=".$filename."\r\n";
+        $body.="Content-Disposition: form-data; name=file; filename=".rawurldecode($filename)."\r\n";
         $body.="Content-type: application/octet-stream\r\n";
         $body.="\r\n";
         $body.=stream_get_contents($file);
