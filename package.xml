@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Dropbox</name>
- <channel>pear.sabredav.org</channel>
+ <channel>pear.dropbox-php.com</channel>
  <summary>Dropbox API library for PHP</summary>
  <description>Dropbox API library for PHP.
 
@@ -10,13 +10,19 @@ Requires oauth and json</description>
   <name>Evert Pot</name>
   <user>evert</user>
   <email>evert@rooftopsolutions.nl</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
- <date>2010-08-04</date>
- <time>21:59:27</time>
+ <contributor>
+  <name>Joe Constant</name>
+  <user>lazyguru</user>
+  <email>lazyguru@jofee.com</email>
+  <active>yes</active>
+ </contributor>
+ <date>2011-06-22</date>
+ <time>20:13:00</time>
  <version>
-  <release>0.4.0</release>
-  <api>0.4.0</api>
+  <release>0.4.1</release>
+  <api>0.4.1</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -171,6 +177,26 @@ Consistent error handling between PECL extension and PEAR package.
 Fixed responses in the API.
 Fixed retrieval of Thumbnails.
 Fixed retrieval of hash-based getMetaData.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.1</release>
+    <api>0.4.1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-06-22</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Fixes for the following issues:
+
+Issue #10 - spaces in file name for getFile
+Issue #13 - spaces in file name for putFile (and move)
+Issue #15 - putFile always returns true
+Issue #21 - spaces in filename (for getMetaData)
    </notes>
   </release>
  </changelog>
