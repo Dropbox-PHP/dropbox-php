@@ -149,7 +149,7 @@ class Dropbox_API {
         } elseif (!is_resource($file)) {
             throw new Dropbox_Exception('File must be a file-resource or a string');
         }
-        $this->multipartFetch('http://api-content.dropbox.com/0/files/' . 
+        $result=$this->multipartFetch('http://api-content.dropbox.com/0/files/' . 
                 $root . '/' . trim($directory,'/'), $file, $filename);
         
         if(!isset($result["httpStatus"]) || $result["httpStatus"] != 200) 
