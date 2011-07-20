@@ -18,11 +18,11 @@ Requires oauth and json</description>
   <email>lazyguru@jofee.com</email>
   <active>yes</active>
  </contributor>
- <date>2011-06-22</date>
- <time>20:13:00</time>
+ <date>2011-07-20</date>
+ <time>00:27:00</time>
  <version>
-  <release>0.4.1</release>
-  <api>0.4.1</api>
+  <release>0.4.2</release>
+  <api>0.4.2</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -30,27 +30,25 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-Support for creating new accounts.
-Support for &apos;token&apos; api call, for easy authentication.
-Moved the responsibility of storing/retrieving oauth tokens to the user. Proven to be much for flexible.
-A lot more examples.
-Consistent error handling between PECL extension and PEAR package.
-Fixed responses in the API.
-Fixed retrieval of Thumbnails.
-Fixed retrieval of hash-based getMetaData.
+Fixes for the following issues:
+
+Issue #25 - Patch for /Dropbox/API.php / Error using putfile 
+Issue #27 - Wordpress OAuth Support
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="da28a0d8c9bf39373b2e2ea6ecf35c89" name="Dropbox/API.php" role="php" />
+   <file baseinstalldir="." md5sum="1323367bc673524643a176a1768eeedc" name="Dropbox/API.php" role="php" />
    <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
    <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
-   <file baseinstalldir="." md5sum="41b2c33d8c8f5bec0ca466778c7a3dcc" name="Dropbox/OAuth.php" role="php" />
+   <file baseinstalldir="." md5sum="aef8a7cc005af91663a446378ea428f9" name="Dropbox/OAuth.php" role="php" />
    <file baseinstalldir="." md5sum="0bdd1415ac2a781c189a4beeecc21f8a" name="Dropbox/Exception/Forbidden.php" role="php" />
    <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
    <file baseinstalldir="." md5sum="c1f8702aea220c88c83f71cf10da22ed" name="Dropbox/Exception/OverQuota.php" role="php" />
    <file baseinstalldir="." md5sum="bf9b9b3179f8e96838a041cd03a463a0" name="Dropbox/Exception/RequestToken.php" role="php" />
    <file baseinstalldir="." md5sum="ea72b0fbf54c4378285d8887f8681676" name="Dropbox/OAuth/PEAR.php" role="php" />
    <file baseinstalldir="." md5sum="200a656801f8263e511e8d25f5d6c06e" name="Dropbox/OAuth/PHP.php" role="php" />
+   <file baseinstalldir="." md5sum="b9b431381007e716cf81971f8f3fdb4c" name="Dropbox/OAuth/Wordpress.php" role="php" />
+   <file baseinstalldir="." md5sum="666ac03349fb64383f626ff63600a719" name="Dropbox/OAuth/Zend.php" role="php" />
    <file baseinstalldir="." md5sum="5ee823233bc15db009ecc06d7abd24f3" name="examples/accountinfo.php" role="doc" />
    <file baseinstalldir="." md5sum="94c05e563b68243db5d6ec49fe902d05" name="examples/createaccount.php" role="doc" />
    <file baseinstalldir="." md5sum="cefc917f9d446945f2e939e01d65fa08" name="examples/download_image.php" role="doc" />
@@ -197,6 +195,24 @@ Issue #10 - spaces in file name for getFile
 Issue #13 - spaces in file name for putFile (and move)
 Issue #15 - putFile always returns true
 Issue #21 - spaces in filename (for getMetaData)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.2</release>
+    <api>0.4.2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-07-20</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Fixes for the following issues:
+
+Issue #25 - Patch for /Dropbox/API.php / Error using putfile 
+Issue #27 - Wordpress OAuth Support
    </notes>
   </release>
  </changelog>
