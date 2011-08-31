@@ -120,7 +120,7 @@ class Dropbox_API {
     public function getFile($path = '', $root = null) {
 
         if (is_null($root)) $root = $this->root;
-        $path = implode("/", array_map('rawurlencode', explode("/", $path)));
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
         $result = $this->oauth->fetch('http://api-content.dropbox.com/0/files/' . $root . '/' . ltrim($path,'/'));
         return $result['body'];
 
@@ -280,7 +280,7 @@ class Dropbox_API {
         if (!is_null($hash)) $args['hash'] = $hash; 
         if (!is_null($fileLimit)) $args['file_limit'] = $fileLimit; 
 
-        $path = implode("/", array_map('rawurlencode', explode("/", $path)));
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
         $response = $this->oauth->fetch('http://api.dropbox.com/0/metadata/' . $root . '/' . ltrim($path,'/'), $args);
 
         /* 304 is not modified */
