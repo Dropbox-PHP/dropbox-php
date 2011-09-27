@@ -7,22 +7,22 @@
 
 Requires oauth and json</description>
  <lead>
-  <name>Evert Pot</name>
-  <user>evert</user>
-  <email>evert@rooftopsolutions.nl</email>
-  <active>no</active>
- </lead>
- <contributor>
   <name>Joe Constant</name>
   <user>lazyguru</user>
   <email>lazyguru@jofee.com</email>
   <active>yes</active>
+ </lead>
+ <contributor>
+  <name>Evert Pot</name>
+  <user>evert</user>
+  <email>evert@rooftopsolutions.nl</email>
+  <active>no</active>
  </contributor>
- <date>2011-07-20</date>
- <time>00:27:00</time>
+ <date>2011-09-26</date>
+ <time>23:15:00</time>
  <version>
-  <release>0.4.2</release>
-  <api>0.4.2</api>
+  <release>0.4.4</release>
+  <api>0.4.4</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -30,10 +30,8 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-Fixes for the following issues:
-
-Issue #25 - Patch for /Dropbox/API.php / Error using putfile 
-Issue #27 - Wordpress OAuth Support
+- Added useSSL flag to constructor to allow turning off SSL use
+- Added code to turn off SSL validation during OAuth calls
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
@@ -213,6 +211,40 @@ Fixes for the following issues:
 
 Issue #25 - Patch for /Dropbox/API.php / Error using putfile 
 Issue #27 - Wordpress OAuth Support
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.3</release>
+    <api>0.4.3</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-09-04</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Issue #28 - Oauth Curl class based on Wordpress class 
+Issue #30 - Can't open files with tilde in the name
+Issue #34 - Change API URLs to use HTTPS
+Issue #35 - Change hard-coded API URLs to use a class constant
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.4</release>
+    <api>0.4.4</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-09-26</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+- Added useSSL flag to constructor to allow turning off SSL use
+- Added code to turn off SSL validation during OAuth calls
    </notes>
   </release>
  </changelog>

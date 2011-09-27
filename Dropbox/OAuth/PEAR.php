@@ -82,9 +82,18 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
      * @param array $httpHeaders 
      * @return string 
      */
-    public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()) {
+    public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array())
+    {
+        $httpRequest = new HTTP_Request2(null, 
+                HTTP_Request2::METHOD_GET, 
+                array(
+                    'ssl_verify_peer' => false, 
+                    'ssl_verify_host' => false
+                )
+        );
 
         $consumerRequest = new HTTP_OAuth_Consumer_Request();
+        $consumerRequest->accept($httpRequest);
         $consumerRequest->setUrl($uri);
         $consumerRequest->setMethod($method);
         $consumerRequest->setSecrets($this->OAuth->getSecrets());
