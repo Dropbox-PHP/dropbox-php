@@ -16,8 +16,8 @@ The extension is recommended, but if you can't install php extensions you should
 Installing
 ----------
 
-    pear channel-discover pear.sabredav.org
-    pear install sabredav/Dropbox-alpha
+    pear channel-discover pear.dropbox-php.com
+    pear install dropbox-php/Dropbox-alpha
 
 Documentation
 -------------
