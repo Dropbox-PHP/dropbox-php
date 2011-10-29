@@ -23,12 +23,12 @@ class Dropbox_API {
     /**
      * API URl
      */
-    protected $api_url = 'api.dropbox.com/0/';
+    protected $api_url = 'https://api.dropbox.com/1/';
     
     /**
      * Content API URl
      */
-    protected $api_content_url = 'api-content.dropbox.com/0/';
+    protected $api_content_url = 'https://api-content.dropbox.com/1/';
 
     /**
      * OAuth object 
@@ -43,15 +43,6 @@ class Dropbox_API {
      * @var string 
      */
     protected $root;
-    
-    /**
-     * Determines if connections should use SSL or not.  
-     * Defaults to true in construtor
-     * 
-     * @deprecated New Dropbox rest calls require SSL.
-     * @var boolean
-     */
-    protected $useSSL;
 
     /**
      * Constructor 
@@ -64,14 +55,9 @@ class Dropbox_API {
         $this->oauth = $oauth;
         $this->root = $root;
         $this->useSSL = $useSSL;
-        if ($this->useSSL)
+        if (!$this->useSSL)
         {
-            $this->api_url = 'https://' . $this->api_url;
-            $this->api_content_url = 'https://' . $this->api_content_url;
-        } else
-        {
-            $this->api_url = 'http://' . $this->api_url;
-            $this->api_content_url = 'http://' . $this->api_content_url;
+            throw new Dropbox_Exception('Dropbox REST API now requires that all requests use SSL');
         }
 
     }
