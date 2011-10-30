@@ -1,0 +1,77 @@
+#!/usr/bin/php
+<?php
+
+// We want to know if something goes wrong
+error_reporting(-1);
+ini_set('display_errors', 1);
+
+echo "Setting up OAuth info for the dropbox-php unit tests...\n\n";
+
+// Only run in the cli...
+if (php_sapi_name() !== 'cli') {
+    die('This test suite should be run from a command prompt!');
+}
+
+// File to save OAuth info for the unit tests
+$oauthCache = dirname(__FILE__) . '/oauth.cache';
+if (file_exists($oauthCache)) { unlink($oauthCache); }
+
+// Make sure we can load the Dropbox classes
+require dirname(__FILE__) . '/../Dropbox/autoload.php';
+
+// Pick an OAuth handler
+$choices = array(
+    array('PHP',        'PECL oauth extension'),
+    array('PEAR',       'PEAR HTTP_OAuth package'),
+    array('Zend',       'Zend_Oauth package'),
+    array('Curl',       'PECL curl extension'),
+    array('Wordpress',  'WordPress WP_Http class'),
+);
+
+while (!isset($oauthClass)) {
+    echo "Choose one of the following to use for negotiating OAuth:\n";
+    foreach ($choices as $i => $lib) {
+        printf(" [%s] %s (uses the %s)\n", $i+1, 'Dropbox_OAuth_'.$lib[0], $lib[1]);
+    }
+    echo "\n";
+    fscanf(STDIN, "%d\n", $choice);
+    if (isset($choices[ $choice-1 ])) {
+        $oauthClass = 'Dropbox_OAuth_' . $choices[ $choice-1 ][0];
+    } else {
+        echo "Not a valid choice: {$choice}\n\n";
+    }
+}
+
+echo "Using {$oauthClass} for OAuth negotiation!\n\n";
+
+// Provide consumer key + secret
+echo "To test the dropbox api, you need a consumer key & secret...\n\n";
+
+echo "Please enter your CONSUMER KEY and press enter: ";
+$consumerKey = trim(fgets(STDIN));
+echo "Please enter your CONSUMER SECRET and press enter: ";
+$consumerSecret = trim(fgets(STDIN));
+
+// Guide through OAuth workflow...
+$oauth = new $oauthClass($consumerKey, $consumerSecret);
+$tokens = $oauth->getRequestToken();
+
+echo "Visit the following url in a browser, login if necessary, and click 'Allow':\n";
+echo $oauth->getAuthorizeUrl() . "\n\n";
+echo "Press enter when this is done...";
+fgets(STDIN);
+
+$tokens = $oauth->getAccessToken();
+$oauth->setToken($tokens);
+
+// Test that we can connect
+$dropbox = new Dropbox_API($oauth);
+$result = $dropbox->getAccountInfo();
+
+if (isset($result['uid'])) {
+    file_put_contents($oauthCache, serialize(array('tokens' => $tokens, 'class' => $oauthClass, 'consumer' => array('key' => $consumerKey, 'secret' => $consumerSecret))));
+    echo "Got an OAuth token, confirmed connection with dropbox api. Now you can run tests with the `phpunit` command!\n\n";
+}
+else {
+    die("An error occurred, unable to confirm connection with dropbox api\n");
+}
