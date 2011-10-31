@@ -23,12 +23,12 @@ class Dropbox_API {
     /**
      * API URl
      */
-    protected $api_url = 'api.dropbox.com/0/';
+    protected $api_url = 'https://api.dropbox.com/1/';
     
     /**
      * Content API URl
      */
-    protected $api_content_url = 'api-content.dropbox.com/0/';
+    protected $api_content_url = 'https://api-content.dropbox.com/1/';
 
     /**
      * OAuth object 
@@ -43,15 +43,6 @@ class Dropbox_API {
      * @var string 
      */
     protected $root;
-    
-    /**
-     * Determines if connections should use SSL or not.  
-     * Defaults to true in construtor
-     * 
-     * @deprecated New Dropbox rest calls require SSL.
-     * @var boolean
-     */
-    protected $useSSL;
 
     /**
      * Constructor 
@@ -64,14 +55,9 @@ class Dropbox_API {
         $this->oauth = $oauth;
         $this->root = $root;
         $this->useSSL = $useSSL;
-        if ($this->useSSL)
+        if (!$this->useSSL)
         {
-            $this->api_url = 'https://' . $this->api_url;
-            $this->api_content_url = 'https://' . $this->api_content_url;
-        } else
-        {
-            $this->api_url = 'http://' . $this->api_url;
-            $this->api_content_url = 'http://' . $this->api_content_url;
+            throw new Dropbox_Exception('Dropbox REST API now requires that all requests use SSL');
         }
 
     }
@@ -87,20 +73,12 @@ class Dropbox_API {
      *
      * @param string $email 
      * @param string $password 
+     * @deprecated This method is no longer supported
      * @return array 
      */
     public function getToken($email, $password) {
 
-        $data = $this->oauth->fetch($this->api_url . 'token', array(
-            'email' => $email, 
-            'password' => $password
-        ),'POST');
-
-        $data = json_decode($data['body']); 
-        return array(
-            'token' => $data->token,
-            'token_secret' => $data->secret,
-        );
+        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
 
     }
 
@@ -123,18 +101,12 @@ class Dropbox_API {
      * @param string $first_name 
      * @param string $last_name 
      * @param string $password 
+     * @deprecated This method is no longer supported
      * @return bool 
      */
     public function createAccount($email, $first_name, $last_name, $password) {
 
-        $result = $this->oauth->fetch($this->api_url . 'account',array(
-            'email'      => $email,
-            'first_name' => $first_name,
-            'last_name'  => $last_name,
-            'password'   => $password,
-          ), 'POST');
-
-        return $result['body']==='OK'; 
+        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
 
     }
 
