@@ -13,16 +13,22 @@ Requires oauth and json</description>
   <active>yes</active>
  </lead>
  <contributor>
+  <name>Evan Kaufman</name>
+  <user>EvanK</user>
+  <email></email>
+  <active>yes</active>
+ </contributor>
+ <contributor>
   <name>Evert Pot</name>
   <user>evert</user>
   <email>evert@rooftopsolutions.nl</email>
   <active>no</active>
  </contributor>
- <date>2011-09-27</date>
- <time>06:30:00</time>
+ <date>2011-10-31</date>
+ <time>15:52:00</time>
  <version>
-  <release>0.4.4</release>
-  <api>0.4.4</api>
+  <release>0.4.5</release>
+  <api>0.4.5</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -30,8 +36,8 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-- Added useSSL flag to constructor to allow turning off SSL use
-- Added code to turn off SSL validation during OAuth calls
+- Updated to work with Dropbox API version 1.
+- Some PHPUnit tests
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
@@ -245,6 +251,22 @@ Issue #35 - Change hard-coded API URLs to use a class constant
    <notes>
 - Added useSSL flag to constructor to allow turning off SSL use
 - Added code to turn off SSL validation during OAuth calls
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.5</release>
+    <api>0.4.5</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2011-10-31</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+- Updated to work with Dropbox API version 1.
+- Some PHPUnit tests
    </notes>
   </release>
  </changelog>
