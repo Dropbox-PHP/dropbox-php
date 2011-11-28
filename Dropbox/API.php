@@ -43,6 +43,7 @@ class Dropbox_API {
      * @var string 
      */
     protected $root;
+    protected $useSSL;
 
     /**
      * Constructor 
@@ -78,8 +79,7 @@ class Dropbox_API {
      */
     public function getToken($email, $password) {
 
-        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
-
+      throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
     }
 
     /**
@@ -341,6 +341,27 @@ class Dropbox_API {
         return $this->oauth->fetch($uri, $body, 'POST', $headers);
 
     }
-
+	
+	
+	/**
+     * Search
+     *
+     * Returns metadata for all files and folders that match the search query.
+     *
+	 * @added by: diszo.sasil 
+	 *
+     * @param string $query	 
+     * @param string $root Use this to override the default root path (sandbox/dropbox)
+	 * @param string $path
+     * @return array
+     */
+	public function search($query = '', $root = null, $path = ''){
+		if (is_null($root)) $root = $this->root;
+		if(!empty($path)){
+			$path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+		}
+        $response = $this->oauth->fetch($this->api_url . 'search/' . $root . '/' . ltrim($path,'/'),array('query' => $query));
+        return json_decode($response['body'],true);
+	}
 
 }
