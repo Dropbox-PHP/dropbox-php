@@ -9,6 +9,14 @@
  * @license http://code.google.com/p/dropbox-php/wiki/License MIT
  */
 
+if (!class_exists('HTTP_OAuth_Consumer')) {
+
+    // We're going to try to load in manually
+    include 'HTTP/OAuth/Consumer.php';
+
+}
+if (!class_exists('HTTP_OAuth_Consumer')) 
+    throw new Dropbox_Exception('The HTTP_OAuth_Consumer class could not be found! Did you install the pear HTTP_OAUTH class?');
 
 /**
  * This class is used to sign all requests to dropbox
@@ -39,20 +47,10 @@ class Dropbox_OAuth_PEAR extends Dropbox_OAuth {
      * @param string $consumerKey 
      * @param string $consumerSecret 
      */
-    public function __construct($consumerKey, $consumerSecret) {
-
-        if (!class_exists('HTTP_OAuth_Consumer')) {
-
-            // We're going to try to load in manually
-            include 'HTTP/OAuth/Consumer.php';
-
-        }
-        if (!class_exists('HTTP_OAuth_Consumer')) 
-            throw new Dropbox_Exception('The HTTP_OAuth_Consumer class could not be found! Did you install the pear HTTP_OAUTH class?');
-
-        $this->OAuth = new HTTP_OAuth_Consumer($consumerKey, $consumerSecret);
+    public function __construct($consumerKey, $consumerSecret)
+    {
+        $this->OAuth = new Dropbox_OAuth_Consumer_Dropbox($consumerKey, $consumerSecret);
         $this->consumerKey = $consumerKey;
-
     }
 
     /**
