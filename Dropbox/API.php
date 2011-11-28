@@ -364,4 +364,10 @@ class Dropbox_API {
         return json_decode($response['body'],true);
 	}
 
+    public function share($url, $root = null) {
+        if (is_null($root)) $root = $this->root;
+        $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($url, '/'));
+        return json_decode($response['body'],true);
+
+    }
 }
