@@ -64,25 +64,6 @@ class Dropbox_API {
     }
 
     /**
-     * Returns OAuth tokens based on an email address and passwords
-     *
-     * This can be used to bypass the regular oauth workflow.
-     *
-     * This method returns an array with 2 elements:
-     *   * token
-     *   * secret
-     *
-     * @param string $email 
-     * @param string $password 
-     * @deprecated This method is no longer supported
-     * @return array 
-     */
-    public function getToken($email, $password) {
-
-      throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
-    }
-
-    /**
      * Returns information about the current dropbox account 
      * 
      * @return stdclass 
@@ -93,23 +74,6 @@ class Dropbox_API {
         return json_decode($data['body'],true);
 
     }
-
-    /**
-     * Creates a new Dropbox account
-     *
-     * @param string $email 
-     * @param string $first_name 
-     * @param string $last_name 
-     * @param string $password 
-     * @deprecated This method is no longer supported
-     * @return bool 
-     */
-    public function createAccount($email, $first_name, $last_name, $password) {
-
-        throw new Dropbox_Exception('This API method is deprecated as of the version 1 API');
-
-    }
-
 
     /**
      * Returns a file's contents 
@@ -237,30 +201,6 @@ class Dropbox_API {
     }
 
     /**
-     * Returns a list of links for a directory
-     *
-     * The links can be used to securely open files throug a browser. The links are cookie protected
-     * so a user is asked to login if there's no valid session cookie.
-     *
-     * @param string $path Path to directory or file
-     * @param string $root Use this to override the default root path (sandbox/dropbox)
-     * @deprecated This method is no longer supported
-     * @return array 
-     */
-    public function getLinks($path, $root = null) {
-
-        throw new Dropbox_Exception('This API method is currently broken, and dropbox documentation about this is no longer online. Please ask Dropbox support if you really need this.');
-
-        /*
-        if (is_null($root)) $root = $this->root;
-        
-        $response = $this->oauth->fetch($this->api_url . 'links/' . $root . '/' . ltrim($path,'/'));
-        return json_decode($response,true);
-        */ 
-
-    }
-
-    /**
      * Returns file and directory information
      * 
      * @param string $path Path to receive information from 
@@ -364,6 +304,15 @@ class Dropbox_API {
         return json_decode($response['body'],true);
 	}
 
+    /**
+     * Creates and returns a shareable link to files or folders.
+     * 
+     * Note: Links created by the /shares API call expire after thirty days.
+     * 
+     * @param type $url
+     * @param type $root
+     * @return type 
+     */
     public function share($url, $root = null) {
         if (is_null($root)) $root = $this->root;
         $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($url, '/'));

@@ -11,7 +11,7 @@ class APITest extends PHPUnit_Framework_TestCase
         
         $setup = unserialize(file_get_contents($filename));
         
-        require_once dirname(__FILE__) . '/../Dropbox/autoload.php';
+        require_once dirname(__FILE__) . '/../src/Dropbox/autoload.php';
         $this->oauthClass = $setup['class'];
         $oauth = new $this->oauthClass($setup['consumer']['key'], $setup['consumer']['secret']);
         $oauth->setToken($setup['tokens']);

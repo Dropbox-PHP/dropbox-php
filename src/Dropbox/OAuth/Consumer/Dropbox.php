@@ -11,6 +11,9 @@
  * @license http://code.google.com/p/dropbox-php/wiki/License MIT
  */
 
+require_once 'HTTP/OAuth.php';
+require_once 'HTTP/OAuth/Consumer.php';
+
 /* 
  * This class is to help work around aomw ssl issues.
  */
