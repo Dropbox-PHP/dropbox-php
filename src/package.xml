@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Dropbox</name>
  <channel>pear.dropbox-php.com</channel>
  <summary>Dropbox API library for PHP</summary>
@@ -25,10 +25,10 @@ Requires oauth and json</description>
   <active>no</active>
  </contributor>
  <date>2012-01-15</date>
- <time>01:06:00</time>
+ <time>03:00:00</time>
  <version>
-  <release>0.5.0</release>
-  <api>0.5.0</api>
+  <release>0.5.1</release>
+  <api>0.5.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -36,34 +36,25 @@ Requires oauth and json</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-- Minor bug fixes
-- Added share method from Issue #42
-- Added search method from Issue #42
-- Added ant build script and phpunit config file
-- Updated status to "Beta"
+- Fixed a packaging issue
  </notes>
  <contents>
-  <dir baseinstalldir="." name="/">
-   <dir baseinstalldir="." name="src">
-    <file baseinstalldir="." name="Dropbox/Exception/Forbidden.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/Exception/NotFound.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/Exception/OverQuota.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/Exception/RequestToken.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/Consumer/Dropbox.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/Curl.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/PEAR.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/PHP.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/Wordpress.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth/Zend.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/API.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/Exception.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/OAuth.php" role="php" />
-    <file baseinstalldir="." name="Dropbox/autoload.php" role="php" />
-   </dir>
-   <file baseinstalldir="." name="examples/README.txt" role="doc" />
-   <file baseinstalldir="." name="tests/APITest.php" role="doc" />
-   <file baseinstalldir="." name="tests/setup" role="doc" />
-   <file baseinstalldir="." name="LICENSE" role="doc" />
+  <dir name="/">
+   <file name="LICENSE" role="doc" />
+   <file name="Dropbox/API.php" role="php" />
+   <file name="Dropbox/autoload.php" role="php" />
+   <file name="Dropbox/Exception.php" role="php" />
+   <file name="Dropbox/OAuth.php" role="php" />
+   <file name="Dropbox/Exception/Forbidden.php" role="php" />
+   <file name="Dropbox/Exception/NotFound.php" role="php" />
+   <file name="Dropbox/Exception/OverQuota.php" role="php" />
+   <file name="Dropbox/Exception/RequestToken.php" role="php" />
+   <file name="Dropbox/OAuth/Curl.php" role="php" />
+   <file name="Dropbox/OAuth/PEAR.php" role="php" />
+   <file name="Dropbox/OAuth/PHP.php" role="php" />
+   <file name="Dropbox/OAuth/Wordpress.php" role="php" />
+   <file name="Dropbox/OAuth/Zend.php" role="php" />
+   <file name="Dropbox/OAuth/Consumer/Dropbox.php" role="php" />
   </dir>
  </contents>
  <dependencies>
@@ -290,6 +281,21 @@ Issue #35 - Change hard-coded API URLs to use a class constant
 - Added search method from Issue #42
 - Added ant build script and phpunit config file
 - Updated status to "Beta"
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.1</release>
+    <api>0.5.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2012-01-14</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+- Fixed a packaging issue
    </notes>
   </release>
  </changelog>

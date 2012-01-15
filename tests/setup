@@ -17,7 +17,7 @@ $oauthCache = dirname(__FILE__) . '/oauth.cache';
 if (file_exists($oauthCache)) { unlink($oauthCache); }
 
 // Make sure we can load the Dropbox classes
-require dirname(__FILE__) . '/../Dropbox/autoload.php';
+require dirname(__FILE__) . '/../src/Dropbox/autoload.php';
 
 // Pick an OAuth handler
 $choices = array(
