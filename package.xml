@@ -286,6 +286,8 @@ Issue #35 - Change hard-coded API URLs to use a class constant
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 - Minor bug fixes
+- Added share method from Issue #42
+- Added search method from Issue #42
 - Added ant build script and phpunit config file
 - Updated status to "Beta"
    </notes>
