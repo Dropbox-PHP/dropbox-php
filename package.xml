@@ -24,42 +24,46 @@ Requires oauth and json</description>
   <email>evert@rooftopsolutions.nl</email>
   <active>no</active>
  </contributor>
- <date>2011-10-31</date>
- <time>15:52:00</time>
+ <date>2012-01-15</date>
+ <time>01:06:00</time>
  <version>
-  <release>0.4.5</release>
-  <api>0.4.5</api>
+  <release>0.5.0</release>
+  <api>0.5.0</api>
  </version>
  <stability>
-  <release>alpha</release>
-  <api>alpha</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-- Updated to work with Dropbox API version 1.
-- Some PHPUnit tests
+- Minor bug fixes
+- Added share method from Issue #42
+- Added search method from Issue #42
+- Added ant build script and phpunit config file
+- Updated status to "Beta"
  </notes>
  <contents>
   <dir baseinstalldir="." name="/">
-   <file baseinstalldir="." md5sum="1323367bc673524643a176a1768eeedc" name="Dropbox/API.php" role="php" />
-   <file baseinstalldir="." md5sum="f2eb54a3691eab71e4cb1f81d2f2b923" name="Dropbox/autoload.php" role="php" />
-   <file baseinstalldir="." md5sum="78d89befd9e51c312156884561624c54" name="Dropbox/Exception.php" role="php" />
-   <file baseinstalldir="." md5sum="aef8a7cc005af91663a446378ea428f9" name="Dropbox/OAuth.php" role="php" />
-   <file baseinstalldir="." md5sum="0bdd1415ac2a781c189a4beeecc21f8a" name="Dropbox/Exception/Forbidden.php" role="php" />
-   <file baseinstalldir="." md5sum="c7302b9d270d1f46ca52a55ce017d3db" name="Dropbox/Exception/NotFound.php" role="php" />
-   <file baseinstalldir="." md5sum="c1f8702aea220c88c83f71cf10da22ed" name="Dropbox/Exception/OverQuota.php" role="php" />
-   <file baseinstalldir="." md5sum="bf9b9b3179f8e96838a041cd03a463a0" name="Dropbox/Exception/RequestToken.php" role="php" />
-   <file baseinstalldir="." md5sum="ea72b0fbf54c4378285d8887f8681676" name="Dropbox/OAuth/PEAR.php" role="php" />
-   <file baseinstalldir="." md5sum="200a656801f8263e511e8d25f5d6c06e" name="Dropbox/OAuth/PHP.php" role="php" />
-   <file baseinstalldir="." md5sum="b9b431381007e716cf81971f8f3fdb4c" name="Dropbox/OAuth/Wordpress.php" role="php" />
-   <file baseinstalldir="." md5sum="666ac03349fb64383f626ff63600a719" name="Dropbox/OAuth/Zend.php" role="php" />
-   <file baseinstalldir="." md5sum="5ee823233bc15db009ecc06d7abd24f3" name="examples/accountinfo.php" role="doc" />
-   <file baseinstalldir="." md5sum="94c05e563b68243db5d6ec49fe902d05" name="examples/createaccount.php" role="doc" />
-   <file baseinstalldir="." md5sum="cefc917f9d446945f2e939e01d65fa08" name="examples/download_image.php" role="doc" />
-   <file baseinstalldir="." md5sum="1e1ee10475114602d1573134395fd26c" name="examples/getmetadata.php" role="doc" />
-   <file baseinstalldir="." md5sum="81cf80418537f1e315fde633f97f2ffe" name="examples/oauth_workflow.php" role="doc" />
-   <file baseinstalldir="." md5sum="61d55c115a49a448e3f3dac4d4dce200" name="examples/uploading.php" role="doc" />
-   <file baseinstalldir="." md5sum="0263e06418c75779afe4ca23bc02d2b8" name="LICENSE" role="doc" />
+   <dir baseinstalldir="." name="src">
+    <file baseinstalldir="." name="Dropbox/Exception/Forbidden.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/Exception/NotFound.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/Exception/OverQuota.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/Exception/RequestToken.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/Consumer/Dropbox.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/Curl.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/PEAR.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/PHP.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/Wordpress.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth/Zend.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/API.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/Exception.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/OAuth.php" role="php" />
+    <file baseinstalldir="." name="Dropbox/autoload.php" role="php" />
+   </dir>
+   <file baseinstalldir="." name="examples/README.txt" role="doc" />
+   <file baseinstalldir="." name="tests/APITest.php" role="doc" />
+   <file baseinstalldir="." name="tests/setup" role="doc" />
+   <file baseinstalldir="." name="LICENSE" role="doc" />
   </dir>
  </contents>
  <dependencies>
@@ -267,6 +271,23 @@ Issue #35 - Change hard-coded API URLs to use a class constant
    <notes>
 - Updated to work with Dropbox API version 1.
 - Some PHPUnit tests
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2012-01-14</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+- Minor bug fixes
+- Added ant build script and phpunit config file
+- Updated status to "Beta"
    </notes>
   </release>
  </changelog>
