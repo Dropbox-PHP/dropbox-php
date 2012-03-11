@@ -83,8 +83,9 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 300);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_CAINFO, "rootca");
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		//Build header
 		$headers = array();
