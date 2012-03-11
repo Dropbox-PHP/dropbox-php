@@ -59,6 +59,35 @@ class APITest extends PHPUnit_Framework_TestCase
         $response = $this->dropbox->putFile('Dropbox-php_tests/alpha.txt', $filename);
         $this->assertTrue($response, 'putFile should return true');
     }
+    /**
+     * @depends testCreateFolderGetMetaData
+     */
+    public function testPutVeryLargeFile()
+    {
+        if ($this->oauthClass == 'Dropbox_OAuth_PHP') {
+            $this->markTestSkipped('Known issues prevent the Dropbox_API::putFile method from working with the oauth extension');
+        }
+        
+        $filename = dirname(__FILE__) . '/large-temp.txt';
+        $kb = 1024;
+        $mb = 1024 * $kb;
+        $data = str_repeat('0', 100 * $mb);
+        file_put_contents($filename, $data);
+        $response = $this->dropbox->putFile('Dropbox-php_tests/alpha-large.txt', $filename);
+        $this->assertTrue($response, 'putVeryLargeFile should return true');
+    }
+    
+    /**
+     * @depends testPutVeryLargeFile
+     */
+    public function testGetVeryLargeFile()
+    {
+        $kb = 1024;
+        $mb = 1024 * $kb;
+        $data = str_repeat('0', 100 * $mb);
+        $response = $this->dropbox->getFile('Dropbox-php_tests/alpha-large.txt');
+        $this->assertEquals($data, $response, 'getVeryLargeFile should return file contents');
+    }
     
     /**
      * @depends testPutFile
