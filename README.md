@@ -21,8 +21,7 @@ Installing
 
 Documentation
 -------------
-Check out the [wiki documentation](http://code.google.com/p/dropbox-php/wiki/Dropbox_API).  
-Have a look at the [examples](http://code.google.com/p/dropbox-php/source/browse/#hg/examples).  
+Check out the [documentation](http://www.dropbox-php.com/docs).  
 
 Questions?
 ----------
