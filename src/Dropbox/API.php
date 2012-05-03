@@ -105,11 +105,13 @@ class Dropbox_API {
         $filename = basename($path);
 
         if($directory==='.') $directory = '';
+        $directory = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($directory));
+        $filename = str_replace('~', '%7E', rawurlencode($filename));
         if (is_null($root)) $root = $this->root;
 
         if (is_string($file)) {
 
-            $file = fopen($file,'r');
+            $file = fopen($file,'rb');
 
         } elseif (!is_resource($file)) {
             throw new Dropbox_Exception('File must be a file-resource or a string');
@@ -244,6 +246,7 @@ class Dropbox_API {
     public function getThumbnail($path, $size = 'small', $root = null) {
 
         if (is_null($root)) $root = $this->root;
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
         $response = $this->oauth->fetch($this->api_content_url . 'thumbnails/' . $root . '/' . ltrim($path,'/'),array('size' => $size));
 
         return $response['body'];
@@ -309,13 +312,14 @@ class Dropbox_API {
      * 
      * Note: Links created by the /shares API call expire after thirty days.
      * 
-     * @param type $url
+     * @param type $path
      * @param type $root
      * @return type 
      */
-    public function share($url, $root = null) {
+    public function share($path, $root = null) {
         if (is_null($root)) $root = $this->root;
-        $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($url, '/'));
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+        $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($path, '/'));
         return json_decode($response['body'],true);
 
     }
