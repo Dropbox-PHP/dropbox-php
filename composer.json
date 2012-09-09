@@ -1,14 +1,14 @@
 {
     "name": "dropbox-php/dropbox-php",
     "type": "library",
-    "description": "Dropbox PHP library"
+    "description": "Dropbox PHP library",
     "keywords": ["dropbox"],
     "homepage": "http://dropbox-php.com/",
     "license": "MIT",
     "authors": [
         {
             "name": "Evert Pot",
-            "email": "evert@rooftopsolutions.nl",
+            "email": "evert@rooftopsolutions.nl"
         },
         {
             "name": "Joe Constant",
