@@ -13,6 +13,12 @@ Requires oauth and json</description>
   <active>yes</active>
  </lead>
  <contributor>
+  <name>Naoki Sawada</name>
+  <user>nao-pon</user>
+  <email></email>
+  <active>yes</active>
+ </contributor>
+ <contributor>
   <name>Evan Kaufman</name>
   <user>EvanK</user>
   <email></email>
@@ -27,16 +33,18 @@ Requires oauth and json</description>
  <date>2012-01-15</date>
  <time>03:00:00</time>
  <version>
-  <release>0.5.1</release>
-  <api>0.5.1</api>
+  <release>0.5.2</release>
+  <api>0.5.2</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
-- Fixed a packaging issue
+- Added composer support
+- PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
+- PR-8 - Methods delta, media, and copy_ref plus additional fixes
  </notes>
  <contents>
   <dir name="/">
@@ -210,7 +218,7 @@ Issue #21 - spaces in filename (for getMetaData)
    <notes>
 Fixes for the following issues:
 
-Issue #25 - Patch for /Dropbox/API.php / Error using putfile 
+Issue #25 - Patch for /Dropbox/API.php / Error using putfile
 Issue #27 - Wordpress OAuth Support
    </notes>
   </release>
@@ -226,7 +234,7 @@ Issue #27 - Wordpress OAuth Support
    <date>2011-09-04</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
-Issue #28 - Oauth Curl class based on Wordpress class 
+Issue #28 - Oauth Curl class based on Wordpress class
 Issue #30 - Can't open files with tilde in the name
 Issue #34 - Change API URLs to use HTTPS
 Issue #35 - Change hard-coded API URLs to use a class constant
@@ -298,5 +306,23 @@ Issue #35 - Change hard-coded API URLs to use a class constant
 - Fixed a packaging issue
    </notes>
   </release>
+  <release>
+   <version>
+    <release>0.5.2</release>
+    <api>0.5.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-09-09</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+- Added composer support
+- PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
+- PR-8 - Methods delta, media, and copy_ref plus additional fixes
+   </notes>
+  </release>
  </changelog>
 </package>
+

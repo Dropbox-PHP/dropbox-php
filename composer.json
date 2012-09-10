@@ -16,6 +16,14 @@
             "email": "lazyguru@jofee.com",
             "homepage": "http://www.joeconstant.me/",
 	    "role": "Developer"
+        },
+        {
+            "name": "Evan Kaufman",
+	    "role": "Developer"
+        },
+        {
+            "name": "Naoki Sawada",
+	    "role": "Developer"
         }
     ],
     "support": {
