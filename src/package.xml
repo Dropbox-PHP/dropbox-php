@@ -1,328 +1,330 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
- <name>Dropbox</name>
- <channel>pear.dropbox-php.com</channel>
- <summary>Dropbox API library for PHP</summary>
- <description>Dropbox API library for PHP.
+<package packageversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+    <name>Dropbox</name>
+    <channel>pear.dropbox-php.com</channel>
+    <summary>Dropbox API library for PHP</summary>
+    <description>
+        Dropbox API library for PHP. Requires oauth and json
+    </description>
+    <lead>
+        <name>Joe Constant</name>
+        <user>lazyguru</user>
+        <email>lazyguru@jofee.com</email>
+        <active>yes</active>
+    </lead>
+    <contributor>
+        <name>Naoki Sawada</name>
+        <user>nao-pon</user>
+        <email></email>
+        <active>yes</active>
+    </contributor>
+    <contributor>
+        <name>Evan Kaufman</name>
+        <user>EvanK</user>
+        <email></email>
+        <active>yes</active>
+    </contributor>
+    <contributor>
+        <name>Evert Pot</name>
+        <user>evert</user>
+        <email>evert@rooftopsolutions.nl</email>
+        <active>no</active>
+    </contributor>
+    <date>2012-09-10</date>
+    <time>04:00:00</time>
+    <version>
+        <release>1.0.0</release>
+        <api>1.0.0</api>
+    </version>
+    <stability>
+        <release>stable</release>
+        <api>stable</api>
+    </stability>
+    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+    <notes>
+        - Added composer support
+        - PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
+        - PR-8 - Methods delta, media, and copy_ref plus additional fixes
+    </notes>
+    <contents>
+        <dir name="/">
+            <file name="LICENSE" role="doc" />
+            <file name="Dropbox/API.php" role="php" />
+            <file name="Dropbox/autoload.php" role="php" />
+            <file name="Dropbox/Exception.php" role="php" />
+            <file name="Dropbox/OAuth.php" role="php" />
+            <file name="Dropbox/Exception/Forbidden.php" role="php" />
+            <file name="Dropbox/Exception/NotFound.php" role="php" />
+            <file name="Dropbox/Exception/OverQuota.php" role="php" />
+            <file name="Dropbox/Exception/RequestToken.php" role="php" />
+            <file name="Dropbox/OAuth/Curl.php" role="php" />
+            <file name="Dropbox/OAuth/PEAR.php" role="php" />
+            <file name="Dropbox/OAuth/PHP.php" role="php" />
+            <file name="Dropbox/OAuth/Wordpress.php" role="php" />
+            <file name="Dropbox/OAuth/Zend.php" role="php" />
+            <file name="Dropbox/OAuth/Consumer/Dropbox.php" role="php" />
+        </dir>
+    </contents>
+    <dependencies>
+        <required>
+            <php>
+                <min>5.2</min>
+            </php>
+            <pearinstaller>
+                <min>1.4.0</min>
+            </pearinstaller>
+        </required>
+        <optional>
+            <package>
+                <name>HTTP_OAuth</name>
+                <channel>pear.php.net</channel>
+                <min>0.1.18</min>
+            </package>
+            <extension>
+                <name>oauth</name>
+            </extension>
+        </optional>
+    </dependencies>
+    <phprelease />
+    <changelog>
+        <release>
+            <version>
+                <release>0.1.0</release>
+                <api>0.1.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-05-08</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            First release
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.1.1</release>
+                <api>0.1.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-05-08</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Automatically trimming double slashes from path. Fixed error output
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.1.2</release>
+                <api>0.1.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-05-09</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Uploading now works
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.2.0</release>
+                <api>0.2.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-05-10</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Added support for a callback url, for a more streamlined user experience
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.3.0</release>
+                <api>0.3.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-07-20</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL extension
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.0</release>
+                <api>0.4.0</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2010-08-04</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Support for creating new accounts.
+            Support for &apos;token&apos; api call, for easy authentication.
+            Moved the responsibility of storing/retrieving oauth tokens to the user. Proven to be much for flexible.
+            A lot more examples.
+            Consistent error handling between PECL extension and PEAR package.
+            Fixed responses in the API.
+            Fixed retrieval of Thumbnails.
+            Fixed retrieval of hash-based getMetaData.
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.1</release>
+                <api>0.4.1</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2011-06-22</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Fixes for the following issues:
 
-Requires oauth and json</description>
- <lead>
-  <name>Joe Constant</name>
-  <user>lazyguru</user>
-  <email>lazyguru@jofee.com</email>
-  <active>yes</active>
- </lead>
- <contributor>
-  <name>Naoki Sawada</name>
-  <user>nao-pon</user>
-  <email></email>
-  <active>yes</active>
- </contributor>
- <contributor>
-  <name>Evan Kaufman</name>
-  <user>EvanK</user>
-  <email></email>
-  <active>yes</active>
- </contributor>
- <contributor>
-  <name>Evert Pot</name>
-  <user>evert</user>
-  <email>evert@rooftopsolutions.nl</email>
-  <active>no</active>
- </contributor>
- <date>2012-01-15</date>
- <time>03:00:00</time>
- <version>
-  <release>0.5.2</release>
-  <api>0.5.2</api>
- </version>
- <stability>
-  <release>stable</release>
-  <api>stable</api>
- </stability>
- <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
- <notes>
-- Added composer support
-- PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
-- PR-8 - Methods delta, media, and copy_ref plus additional fixes
- </notes>
- <contents>
-  <dir name="/">
-   <file name="LICENSE" role="doc" />
-   <file name="Dropbox/API.php" role="php" />
-   <file name="Dropbox/autoload.php" role="php" />
-   <file name="Dropbox/Exception.php" role="php" />
-   <file name="Dropbox/OAuth.php" role="php" />
-   <file name="Dropbox/Exception/Forbidden.php" role="php" />
-   <file name="Dropbox/Exception/NotFound.php" role="php" />
-   <file name="Dropbox/Exception/OverQuota.php" role="php" />
-   <file name="Dropbox/Exception/RequestToken.php" role="php" />
-   <file name="Dropbox/OAuth/Curl.php" role="php" />
-   <file name="Dropbox/OAuth/PEAR.php" role="php" />
-   <file name="Dropbox/OAuth/PHP.php" role="php" />
-   <file name="Dropbox/OAuth/Wordpress.php" role="php" />
-   <file name="Dropbox/OAuth/Zend.php" role="php" />
-   <file name="Dropbox/OAuth/Consumer/Dropbox.php" role="php" />
-  </dir>
- </contents>
- <dependencies>
-  <required>
-   <php>
-    <min>5.2</min>
-   </php>
-   <pearinstaller>
-    <min>1.4.0</min>
-   </pearinstaller>
-  </required>
-  <optional>
-   <package>
-    <name>HTTP_OAuth</name>
-    <channel>pear.php.net</channel>
-    <min>0.1.18</min>
-   </package>
-   <extension>
-    <name>oauth</name>
-   </extension>
-  </optional>
- </dependencies>
- <phprelease />
- <changelog>
-  <release>
-   <version>
-    <release>0.1.0</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-05-08</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-First release
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.1.1</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-05-08</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Automatically trimming double slashes from path. Fixed error output
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.1.2</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-05-09</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Uploading now works
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.2.0</release>
-    <api>0.2.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-05-10</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Added support for a callback url, for a more streamlined user experience
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.3.0</release>
-    <api>0.3.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-07-20</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-There&apos;s now a choice between PEAR&apos;s HTTP_OAuth and the OAuth PECL extension
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.0</release>
-    <api>0.4.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2010-08-04</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Support for creating new accounts.
-Support for &apos;token&apos; api call, for easy authentication.
-Moved the responsibility of storing/retrieving oauth tokens to the user. Proven to be much for flexible.
-A lot more examples.
-Consistent error handling between PECL extension and PEAR package.
-Fixed responses in the API.
-Fixed retrieval of Thumbnails.
-Fixed retrieval of hash-based getMetaData.
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.1</release>
-    <api>0.4.1</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2011-06-22</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Fixes for the following issues:
+            Issue #10 - spaces in file name for getFile
+            Issue #13 - spaces in file name for putFile (and move)
+            Issue #15 - putFile always returns true
+            Issue #21 - spaces in filename (for getMetaData)
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.2</release>
+                <api>0.4.2</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2011-07-20</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Fixes for the following issues:
 
-Issue #10 - spaces in file name for getFile
-Issue #13 - spaces in file name for putFile (and move)
-Issue #15 - putFile always returns true
-Issue #21 - spaces in filename (for getMetaData)
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.2</release>
-    <api>0.4.2</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2011-07-20</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Fixes for the following issues:
-
-Issue #25 - Patch for /Dropbox/API.php / Error using putfile
-Issue #27 - Wordpress OAuth Support
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.3</release>
-    <api>0.4.3</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2011-09-04</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-Issue #28 - Oauth Curl class based on Wordpress class
-Issue #30 - Can't open files with tilde in the name
-Issue #34 - Change API URLs to use HTTPS
-Issue #35 - Change hard-coded API URLs to use a class constant
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.4</release>
-    <api>0.4.4</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2011-09-26</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-- Added useSSL flag to constructor to allow turning off SSL use
-- Added code to turn off SSL validation during OAuth calls
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.4.5</release>
-    <api>0.4.5</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2011-10-31</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-- Updated to work with Dropbox API version 1.
-- Some PHPUnit tests
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.5.0</release>
-    <api>0.5.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <date>2012-01-14</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-- Minor bug fixes
-- Added share method from Issue #42
-- Added search method from Issue #42
-- Added ant build script and phpunit config file
-- Updated status to "Beta"
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.5.1</release>
-    <api>0.5.1</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <date>2012-01-14</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-- Fixed a packaging issue
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.5.2</release>
-    <api>0.5.2</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2012-09-09</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>
-- Added composer support
-- PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
-- PR-8 - Methods delta, media, and copy_ref plus additional fixes
-   </notes>
-  </release>
- </changelog>
+            Issue #25 - Patch for /Dropbox/API.php / Error using putfile
+            Issue #27 - Wordpress OAuth Support
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.3</release>
+                <api>0.4.3</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2011-09-04</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            Issue #28 - Oauth Curl class based on Wordpress class
+            Issue #30 - Can't open files with tilde in the name
+            Issue #34 - Change API URLs to use HTTPS
+            Issue #35 - Change hard-coded API URLs to use a class constant
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.4</release>
+                <api>0.4.4</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2011-09-26</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            - Added useSSL flag to constructor to allow turning off SSL use
+            - Added code to turn off SSL validation during OAuth calls
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.4.5</release>
+                <api>0.4.5</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2011-10-31</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            - Updated to work with Dropbox API version 1.
+            - Some PHPUnit tests
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.5.0</release>
+                <api>0.5.0</api>
+            </version>
+            <stability>
+                <release>beta</release>
+                <api>beta</api>
+            </stability>
+            <date>2012-01-14</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            - Minor bug fixes
+            - Added share method from Issue #42
+            - Added search method from Issue #42
+            - Added ant build script and phpunit config file
+            - Updated status to "Beta"
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.5.1</release>
+                <api>0.5.1</api>
+            </version>
+            <stability>
+                <release>beta</release>
+                <api>beta</api>
+            </stability>
+            <date>2012-01-14</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            - Fixed a packaging issue
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>1.0.0</release>
+                <api>1.0.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <date>2012-09-10</date>
+            <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+            <notes>
+            - Added composer support
+            - PR-13 - DropBox API returns 500 errors rarely. For example, when the thumbnail of the broken picture is acquired etc.
+            - PR-8 - Methods delta, media, and copy_ref plus additional fixes
+            </notes>
+        </release>
+    </changelog>
 </package>
-
