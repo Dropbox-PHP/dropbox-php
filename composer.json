@@ -8,19 +8,29 @@
     "authors": [
         {
             "name": "Evert Pot",
-            "email": "evert@rooftopsolutions.nl"
+            "email": "evert@rooftopsolutions.nl",
+	    "role": "Developer"
         },
         {
             "name": "Joe Constant",
             "email": "lazyguru@jofee.com",
-            "homepage": "http://www.joeconstant.me/"
+            "homepage": "http://www.joeconstant.me/",
+	    "role": "Developer"
         }
     ],
+    "support": {
+        "email": "dropbox-php@googlegroups.com"
+    },
+    "suggest": {
+        "oauth": "1.*",
+        "http_oauth": "1.*"
+    },
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "json": "1.2.*"
     },
     "autoload": {
-        "psr-0": { "Dropbox": "." }
+        "psr-0": { "Dropbox": "src/" }
     },
     "minimum-stability": "dev"
 }
