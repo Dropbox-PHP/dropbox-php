@@ -101,7 +101,11 @@ class Dropbox_API {
      */
     public function putFile($path, $file, $root = null) {
 
-        $directory = dirname($path);
+        if (dirname($path) == '\\') {
+            $directory = "/";
+        } else {
+            $directory = dirname($path);
+        }
         $filename = basename($path);
 
         if($directory==='.') $directory = '';
