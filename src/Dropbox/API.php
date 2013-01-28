@@ -320,10 +320,10 @@ class Dropbox_API {
      * @return array
      */
 	public function search($query = '', $root = null, $path = ''){
-		if (is_null($root)) $root = $this->root;
-		if(!empty($path)){
-			$path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
-		}
+	if (is_null($root)) $root = $this->root;
+	if(!empty($path)){
+		$path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+	}
         $response = $this->oauth->fetch($this->api_url . 'search/' . $root . '/' . ltrim($path,'/'),array('query' => $query));
         return json_decode($response['body'],true);
 	}

@@ -9,10 +9,10 @@ The following PHP extension is required:
 
 The library makes use of OAuth. At the moment you can use either of these libraries:
 
-[PHP OAuth extension](http://pecl.php.net/package/oauth)  
-[PEAR's HTTP_OAUTH package](http://pear.php.net/package/http_oauth)  
+[PHP OAuth extension](http://pecl.php.net/package/oauth)
+[PEAR's HTTP_OAUTH package](http://pear.php.net/package/http_oauth)
 
-The extension is recommended, but if you can't install php extensions you should go for the pear package.  
+The extension is recommended, but if you can't install php extensions you should go for the pear package.
 Installing
 ----------
 
@@ -21,11 +21,11 @@ Installing
 
 Documentation
 -------------
-Check out the [documentation](http://www.dropbox-php.com/docs).  
+Check out the [documentation](http://www.dropbox-php.com/docs).
 
 Questions?
 ----------
 
-[Dropbox-php Mailing list](http://groups.google.com/group/dropbox-php)  
+[Dropbox-php Mailing list](http://groups.google.com/group/dropbox-php)
 [Official Dropbox developer forum](http://forums.dropbox.com/forum.php?id=5)
- 
+
