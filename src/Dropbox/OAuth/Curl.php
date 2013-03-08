@@ -2,8 +2,8 @@
 
 /**
  * Dropbox OAuth
- * 
- * @package Dropbox 
+ *
+ * @package Dropbox
  * @copyright Copyright (C) 2011 Daniel Huesken
  * @author Daniel Huesken (http://www.danielhuesken.de/)
  * @license MIT
@@ -31,15 +31,15 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
      * @var string ProzessCallBack
      */
     public $ProgressFunction = false;
-	
+
     /**
      * Constructor
-     * 
-     * @param string $consumerKey 
-     * @param string $consumerSecret 
+     *
+     * @param string $consumerKey
+     * @param string $consumerSecret
      */
     public function __construct($consumerKey, $consumerSecret) {
-        if (!function_exists('curl_exec')) 
+        if (!function_exists('curl_exec'))
             throw new Dropbox_Exception('The PHP curl functions not available!');
 
         $this->consumerKey = $consumerKey;
@@ -47,29 +47,28 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
     }
 
     /**
-     * Fetches a secured oauth url and returns the response body. 
-     * 
-     * @param string $uri 
-     * @param mixed $arguments 
-     * @param string $method 
-     * @param array $httpHeaders 
-     * @return string 
+     * Fetches a secured oauth url and returns the response body.
+     *
+     * @param string $uri
+     * @param mixed $arguments
+     * @param string $method
+     * @param array $httpHeaders
+     * @return string
      */
-    public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()) {
-		
+	public function fetch($uri, $arguments = array(), $method = 'GET', $httpHeaders = array()) {
+
 		$uri=str_replace('http://', 'https://', $uri); // all https, upload makes problems if not
 		if (is_string($arguments) and strtoupper($method) == 'POST') {
-		    preg_match("/\?file=(.*)$/i", $uri, $matches);
+			preg_match("/\?file=(.*)$/i", $uri, $matches);
 			if (isset($matches[1])) {
-                $uri = str_replace($matches[0], "", $uri);
-                $filename = $matches[1];
+				$uri = str_replace($matches[0], "", $uri);
+				$filename = $matches[1];
 				$httpHeaders=array_merge($httpHeaders,$this->getOAuthHeader($uri, array("file" => $filename), $method));
-            }
+			}
 		} else {
 			$httpHeaders=array_merge($httpHeaders,$this->getOAuthHeader($uri, $arguments, $method));
 		}
-		
-		$ch = curl_init();	
+		$ch = curl_init();
 		if (strtoupper($method) == 'POST') {
 			curl_setopt($ch, CURLOPT_URL, $uri);
 			curl_setopt($ch, CURLOPT_POST, true);
@@ -80,10 +79,9 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 			curl_setopt($ch, CURLOPT_POST, false);
 		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 300);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_CAINFO, "rootca");
+		curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		//Build header
 		$headers = array();
@@ -103,11 +101,11 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 		$error=curl_error($ch);
 		$status=curl_getinfo($ch,CURLINFO_HTTP_CODE);
 		curl_close($ch);
-		
-		
+
+
 		if (!empty($errorno))
 			throw new Dropbox_Exception_NotFound('Curl error: ('.$errorno.') '.$error."\n");
-						
+
 		if ($status>=300) {
 			$body = json_decode($response,true);
 			switch ($status) {
@@ -130,13 +128,13 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 							$body["error"] . "\n");
 			}
 			if (!empty($body["error"]))
-				throw new Dropbox_Exception_RequestToken('Error: ('.$status.') '.$body["error"]."\n");	
+				throw new Dropbox_Exception_RequestToken('Error: ('.$status.') '.$body["error"]."\n");
 		}
-		
-        return array(
+
+		return array(
 			'body' => $response,
-            'httpStatus' => $status
-        );
+			'httpStatus' => $status
+		);
     }
 
     /**
@@ -206,7 +204,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
     /**
      * Requests the OAuth request token.
      *
-     * @return void 
+     * @return void
      */
     public function getRequestToken() {
         $result = $this->fetch(self::URI_REQUEST_TOKEN, array(), 'POST');
@@ -225,8 +223,8 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
      *
      * This method requires the 'unauthorized' request tokens
      * and, if successful will set the authorized request tokens.
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function getAccessToken() {
         $result = $this->fetch(self::URI_ACCESS_TOKEN, array(), 'POST');
@@ -276,6 +274,6 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
             return $hash;
         }
     }
-	
+
 
 }
