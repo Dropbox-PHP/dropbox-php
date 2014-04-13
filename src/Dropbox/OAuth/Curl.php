@@ -44,6 +44,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 
         $this->consumerKey = $consumerKey;
         $this->consumerSecret = $consumerSecret;
+        $this->putSupported = true;
     }
 
     /**
@@ -62,7 +63,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 			preg_match("/\?file=(.*)$/i", $uri, $matches);
 			if (isset($matches[1])) {
 				$uri = str_replace($matches[0], "", $uri);
-				$filename = $matches[1];
+				$filename =  rawurldecode(str_replace('%7E', '~', $matches[1]));
 				$httpHeaders=array_merge($httpHeaders,$this->getOAuthHeader($uri, array("file" => $filename), $method));
 			}
 		} else {
@@ -72,8 +73,19 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 		if (strtoupper($method) == 'POST') {
 			curl_setopt($ch, CURLOPT_URL, $uri);
 			curl_setopt($ch, CURLOPT_POST, true);
+			if (is_array($arguments))
+			    $arguments=http_build_query($arguments);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arguments);
 			$httpHeaders['Content-Length']=strlen($arguments);
+		} else if (strtoupper($method) == 'PUT' && $this->inFile) {
+			curl_setopt($ch, CURLOPT_URL, $uri.'?'.http_build_query($arguments));
+			curl_setopt($ch, CURLOPT_PUT, true);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+			curl_setopt($ch, CURLOPT_INFILE, $this->inFile);
+			curl_setopt($ch, CURLOPT_INFILESIZE, $this->inFileSize);
+			fseek($this->inFile, 0);
+			$httpHeaders['Content-Length'] = $this->inFileSize;
+			$this->inFileSize = $this->inFile = null;
 		} else {
 			curl_setopt($ch, CURLOPT_URL, $uri.'?'.http_build_query($arguments));
 			curl_setopt($ch, CURLOPT_POST, false);
@@ -82,8 +94,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 		curl_setopt($ch, CURLOPT_TIMEOUT, 600);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_CAINFO, "rootca");
-		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+		curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ca-bundle.pem');
 		//Build header
 		$headers = array();
 		foreach ($httpHeaders as $name => $value) {
@@ -103,33 +114,47 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 		$status=curl_getinfo($ch,CURLINFO_HTTP_CODE);
 		curl_close($ch);
 
+		$this->lastResponse = array(
+				'httpStatus' => $status,
+				'body' => $response
+		);
 
 		if (!empty($errorno))
 			throw new Dropbox_Exception_NotFound('Curl error: ('.$errorno.') '.$error."\n");
 
-		if ($status>=300) {
-			$body = json_decode($response,true);
+			if ($status>=300) {
+			$body = @json_decode($response, true);
+			$jsonErr = (is_array($body) && isset($body['error']))? $body['error'] : '';
 			switch ($status) {
 				// Not modified
 				case 304 :
 					return array(
-						'httpStatus' => 304,
-						'body' => null,
+					'httpStatus' => 304,
+					'body' => null,
 					);
 					break;
+				case 400 :
+					throw new Dropbox_Exception_Forbidden('Forbidden. Bad input parameter. Error message should indicate which one and why.');
+				case 401 :
+					throw new Dropbox_Exception_Forbidden('Forbidden. Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix, you should re-authenticate the user.');
 				case 403 :
-					throw new Dropbox_Exception_Forbidden('Forbidden.
-						This could mean a bad OAuth request, or a file or folder already existing at the target location.
-						' . $body["error"] . "\n");
+					throw new Dropbox_Exception_Forbidden('Forbidden. This could mean a bad OAuth request, or a file or folder already existing at the target location.');
 				case 404 :
-					throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found. ' .
-							$body["error"] . "\n");
+					throw new Dropbox_Exception_NotFound('Resource at uri: ' . $uri . ' could not be found');
+				case 405 :
+					throw new Dropbox_Exception_Forbidden('Forbidden. Request method not expected (generally should be GET or POST).');
+				case 500 :
+					throw new Dropbox_Exception_Forbidden('Server error. ' . $jsonErr);
+				case 503 :
+					throw new Dropbox_Exception_Forbidden('Forbidden. Your app is making too many requests and is being rate limited. 503s can trigger on a per-app or per-user basis.');
 				case 507 :
-					throw new Dropbox_Exception_OverQuota('This dropbox is full. ' .
-							$body["error"] . "\n");
+					throw new Dropbox_Exception_OverQuota('This dropbox is full');
+				default:
+					throw new Dropbox_Exception_RequestToken('Error: ('.$status.') ' . $jsonErr);
+
 			}
 			if (!empty($body["error"]))
-				throw new Dropbox_Exception_RequestToken('Error: ('.$status.') '.$body["error"]."\n");
+				throw new Dropbox_Exception_RequestToken('Error: ('.$status.') ' . $jsonErr);
 		}
 
 		return array(
@@ -181,7 +206,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 
         $encodedParams = array();
         foreach ($signatureParams as $key => $value) {
-            $encodedParams[] = $this->oauth_urlencode($key) . '=' . $this->oauth_urlencode($value);
+            if ($value !== '' && !is_null($value)) $encodedParams[] = rawurlencode($key) . '=' . rawurlencode($value);
         }
 
         $baseString .= $this->oauth_urlencode(implode('&', $encodedParams));
