@@ -132,7 +132,7 @@ class Dropbox_API {
                             break;
                         }
                     }
-                    return $res;
+                    return true;
                 } else {
                     return $this->putStream($path, $file, $root);
                 }
@@ -181,7 +181,7 @@ class Dropbox_API {
     public function chunkedUpload($path, $handle, $root = null, $overwrite = true, $offset = 0, $uploadID = null)
     {
         if (is_string($handle)) {
-            $handle = @fopen($file, 'rb');
+            $handle = @fopen($handle, 'rb');
         }
 
         if ($handle) {
@@ -238,7 +238,7 @@ class Dropbox_API {
             return $this->oauth->fetch($this->api_content_url . 'commit_chunked_upload/' .
                     $root . '/' . ltrim($path,'/'), $params, 'POST');
         } else {
-            throw new Dropbox_Exception('Could not open ' . $file . ' for reading');
+            throw new Dropbox_Exception('Could not open ' . $handle . ' for reading');
         }
     }
 
