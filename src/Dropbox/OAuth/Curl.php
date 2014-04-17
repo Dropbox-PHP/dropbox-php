@@ -84,7 +84,6 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 			curl_setopt($ch, CURLOPT_INFILE, $this->inFile);
 			curl_setopt($ch, CURLOPT_INFILESIZE, $this->inFileSize);
 			fseek($this->inFile, 0);
-			$httpHeaders['Content-Length'] = $this->inFileSize;
 			$this->inFileSize = $this->inFile = null;
 		} else {
 			curl_setopt($ch, CURLOPT_URL, $uri.'?'.http_build_query($arguments));
@@ -206,7 +205,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 
         $encodedParams = array();
         foreach ($signatureParams as $key => $value) {
-            $encodedParams[] = rawurlencode($key) . '=' . rawurlencode($value);
+            if (!is_null($value)) $encodedParams[] = rawurlencode($key) . '=' . rawurlencode($value);
         }
 
         $baseString .= $this->oauth_urlencode(implode('&', $encodedParams));
