@@ -206,7 +206,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 
         $encodedParams = array();
         foreach ($signatureParams as $key => $value) {
-            if ($value !== '' && !is_null($value)) $encodedParams[] = rawurlencode($key) . '=' . rawurlencode($value);
+            $encodedParams[] = rawurlencode($key) . '=' . rawurlencode($value);
         }
 
         $baseString .= $this->oauth_urlencode(implode('&', $encodedParams));
