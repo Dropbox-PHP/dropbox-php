@@ -124,9 +124,7 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 
 		if ($status>=300) {
 			$body = array();
-			try {
-				$body = json_decode($response, true);
-			} catch (Exception $e) {}
+			$body = json_decode($response, true);
 			if (!is_array($body)) {
 				$body = array();
 			}

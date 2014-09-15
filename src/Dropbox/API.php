@@ -46,6 +46,13 @@ class Dropbox_API {
     protected $useSSL;
     
     /**
+     * PHP is Safe Mode
+     * 
+     * @var bool
+     */
+    private $isSafeMode;
+    
+    /**
      * Chunked file size limit
      * 
      * @var unknown
@@ -63,6 +70,7 @@ class Dropbox_API {
         $this->oauth = $oauth;
         $this->root = $root;
         $this->useSSL = $useSSL;
+        $this->isSafeMode = (version_compare(PHP_VERSION, '5.4', '<') && get_cfg_var('safe_mode'));
         if (!$this->useSSL)
         {
             throw new Dropbox_Exception('Dropbox REST API now requires that all requests use SSL');
@@ -111,8 +119,10 @@ class Dropbox_API {
         if (is_resource($file)) {
             $stat = fstat($file);
             $size = $stat['size'];
-        } else if (is_string($file)) {
-            $size = @filesize($file);
+        } else if (is_string($file) && is_readable($file)) {
+            $size = filesize($file);
+        } else {
+        	throw new Dropbox_Exception('File must be a file-resource or a file path string');
         }
          
         if ($this->oauth->isPutSupport()) {
@@ -158,12 +168,10 @@ class Dropbox_API {
             $file = fopen($file,'rb');
 
         } elseif (!is_resource($file)) {
-            throw new Dropbox_Exception('File must be a file-resource or a string');
+            throw new Dropbox_Exception('File must be a file-resource or a file path string');
         }
         
-        try {
-        	set_time_limit(600);
-        } catch (Exception $e) {}
+       	!$this->isSafeMode && set_time_limit(600);
         $result=$this->multipartFetch($this->api_content_url . 'files/' .
                 $root . '/' . trim($directory,'/'), $file, $filename);
 
@@ -184,17 +192,17 @@ class Dropbox_API {
      */
     public function chunkedUpload($path, $handle, $root = null, $overwrite = true, $offset = 0, $uploadID = null)
     {
-        if (is_string($handle)) {
-            $handle = @fopen($handle, 'rb');
+        if (is_string($handle) && is_readable($filename)) {
+            $handle = fopen($handle, 'rb');
         }
 
-        if ($handle) {
+        if (is_resource($handle)) {
             // Seek to the correct position on the file pointer
             fseek($handle, $offset);
 
             // Read from the file handle until EOF, uploading each chunk
             while ($data = fread($handle, $this->chunkSize)) {
-                @set_time_limit(600);
+                !$this->isSafeMode && set_time_limit(600);
                 
                 // Open a temporary file handle and write a chunk of data to it
                 $chunkHandle = fopen('php://temp', 'rwb');
@@ -261,9 +269,7 @@ class Dropbox_API {
      */
     public function putStream($path, $file, $root = null, $overwrite = true)
     {
-        try {
-        	set_time_limit(600);
-        } catch (Exception $e) {}
+       	!$this->isSafeMode && set_time_limit(600);
         
         $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
         if (is_null($root)) {
