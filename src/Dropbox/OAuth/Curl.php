@@ -135,8 +135,8 @@ class Dropbox_OAuth_Curl extends Dropbox_OAuth {
 				// Not modified
 				case 304 :
 					return array(
-					'httpStatus' => 304,
-					'body' => null,
+						'httpStatus' => 304,
+						'body' => null,
 					);
 					break;
 				case 400 :
