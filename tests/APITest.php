@@ -68,7 +68,7 @@ class APITest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('Known issues prevent the Dropbox_API::putFile method from working with the oauth extension');
         }
 
-        $filename = dirname(__FILE__) . '/large-temp.txt';
+        $filename = tempnam(sys_get_temp_dir(), '/large-temp.txt');
         $kb = 1024;
         $mb = 1024 * $kb;
         $data = str_repeat('0', 50 * $mb);
