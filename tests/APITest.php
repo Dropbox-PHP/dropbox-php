@@ -1,5 +1,5 @@
 <?php
-
+ini_set('memory_limit', -1);
 class APITest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
