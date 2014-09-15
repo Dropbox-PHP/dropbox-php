@@ -1,3 +1,4 @@
 tests/temp.txt
 tests/oauth.cache
 build/
+vendor/
