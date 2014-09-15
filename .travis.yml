@@ -1,6 +1,8 @@
 language: php
 php:
 - 5.3
+- 5.4
+- 5.5
+- 5.6
 before_install:
-- openssl aes-256-cbc -K $encrypted_dbf888551544_key -iv $encrypted_dbf888551544_iv
-  -in oauth.cache.enc -out oauth.cache -d
+- openssl aes-256-cbc -K $encrypted_2f11dc29dfab_key -iv $encrypted_2f11dc29dfab_iv -in tests/oauth.cache.enc -out tests/oauth.cache -d
