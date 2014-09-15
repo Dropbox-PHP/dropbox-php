@@ -160,9 +160,9 @@ abstract class Dropbox_OAuth {
         if (is_resource($file)) {
             $stat = fstat($file);
             $this->inFileSize = $stat['size'];
-        } else if (is_string($file)) {
-            $this->inFileSize = @filesize($file);
-            $file = @fopen($file, 'rb');
+        } else if (is_string($file) && is_readable($file)) {
+            $this->inFileSize = filesize($file);
+            $file = fopen($file, 'rb');
         }
         if (!is_resource($file)) {
             throw new Dropbox_Exception('File must be a file-resource or a string');

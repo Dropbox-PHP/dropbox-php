@@ -161,7 +161,9 @@ class Dropbox_API {
             throw new Dropbox_Exception('File must be a file-resource or a string');
         }
         
-        @set_time_limit(600);
+        try {
+        	set_time_limit(600);
+        } catch (Exception $e) {}
         $result=$this->multipartFetch($this->api_content_url . 'files/' .
                 $root . '/' . trim($directory,'/'), $file, $filename);
 
@@ -237,7 +239,9 @@ class Dropbox_API {
 
             // Complete the chunked upload
             $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
-            if (is_null($root)) $root = $this->root;
+            if (is_null($root)) {
+            	$root = $this->root;
+            }
             $params = array('overwrite' => (int) $overwrite, 'upload_id' => $uploadID);
             return $this->oauth->fetch($this->api_content_url . 'commit_chunked_upload/' .
                     $root . '/' . ltrim($path,'/'), $params, 'POST');
@@ -257,18 +261,23 @@ class Dropbox_API {
      */
     public function putStream($path, $file, $root = null, $overwrite = true)
     {
-        @set_time_limit(600);
+        try {
+        	set_time_limit(600);
+        } catch (Exception $e) {}
         
         $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
-        if (is_null($root)) $root = $this->root;
+        if (is_null($root)) {
+        	$root = $this->root;
+        }
 
         $params = array('overwrite' => (int) $overwrite);
         $this->oauth->setInfile($file);
         $result=$this->oauth->fetch($this->api_content_url . 'files_put/' .
                 $root . '/' . ltrim($path,'/'), $params, 'PUT');
         
-        if(!isset($result["httpStatus"]) || $result["httpStatus"] != 200)
+        if (!isset($result["httpStatus"]) || $result["httpStatus"] != 200) {
             throw new Dropbox_Exception("Uploading file to Dropbox failed");
+        }
         
         return true;
     }
