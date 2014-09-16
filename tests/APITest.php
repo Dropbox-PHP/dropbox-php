@@ -6,8 +6,12 @@ class APITest extends PHPUnit_Framework_TestCase
 
     protected $_largeData;
 
+    public static $directoryId;
+
     public static function setUpBeforeClass()
     {
+        self::$directoryId = uniqid(rand(), true);
+
         $filename = dirname(__FILE__) . '/oauth.cache';
         if (!file_exists($filename)) {
             die("Run ./setup first to establish an oauth token!\n\n");
@@ -46,13 +50,13 @@ class APITest extends PHPUnit_Framework_TestCase
     public function testCreateFolderGetMetaData()
     {
         try {
-            $response = $this->dropbox->getMetaData('Dropbox-php_tests');
+            $response = $this->dropbox->getMetaData('Dropbox-php_tests-' . self::$directoryId);
         } catch (Dropbox_Exception_NotFound $e) {
-            $response = $this->dropbox->createFolder('Dropbox-php_tests');
+            $response = $this->dropbox->createFolder('Dropbox-php_tests-' . self::$directoryId);
             $this->assertTrue(isset($response['is_dir']), 'createFolder should return an "is_dir" key');
             $this->assertTrue($response['is_dir'], '"is_dir" key of createFolder should be true');
 
-            $response = $this->dropbox->getMetaData('Dropbox-php_tests');
+            $response = $this->dropbox->getMetaData('Dropbox-php_tests-' . self::$directoryId);
         }
 
         $this->assertTrue(isset($response['contents']), 'getMetaData should return a "contents" key');
@@ -70,7 +74,7 @@ class APITest extends PHPUnit_Framework_TestCase
 
         $filename = dirname(__FILE__) . '/temp.txt';
         file_put_contents($filename, 'abc');
-        $response = $this->dropbox->putFile('Dropbox-php_tests/alpha.txt', $filename);
+        $response = $this->dropbox->putFile('Dropbox-php_tests-' . self::$directoryId . '/alpha.txt', $filename);
         $this->assertTrue($response, 'putFile should return true');
     }
     /**
@@ -85,7 +89,7 @@ class APITest extends PHPUnit_Framework_TestCase
         $this->_largeFilename = tempnam(sys_get_temp_dir(), '/large-temp.txt');
         $data = $this->_getLargeData();
         file_put_contents($this->_largeFilename, $data);
-        $response = $this->dropbox->putFile('Dropbox-php_tests/alpha-large.txt', $this->_largeFilename);
+        $response = $this->dropbox->putFile('Dropbox-php_tests-' . self::$directoryId . '/alpha-large.txt', $this->_largeFilename);
         $this->assertTrue($response, 'putVeryLargeFile should return true');
     }
 
@@ -95,7 +99,7 @@ class APITest extends PHPUnit_Framework_TestCase
     public function testGetVeryLargeFile()
     {
         $data = $this->_getLargeData();
-        $response = $this->dropbox->getFile('Dropbox-php_tests/alpha-large.txt');
+        $response = $this->dropbox->getFile('Dropbox-php_tests-' . self::$directoryId . '/alpha-large.txt');
         $this->assertEquals($data, $response, 'getVeryLargeFile should return file contents');
     }
 
@@ -104,7 +108,7 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testGetFile()
     {
-        $response = $this->dropbox->getFile('Dropbox-php_tests/alpha.txt');
+        $response = $this->dropbox->getFile('Dropbox-php_tests-' . self::$directoryId . '/alpha.txt');
         $this->assertEquals('abc', $response, 'getFile should return file contents');
     }
 
@@ -113,7 +117,7 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testCopy()
     {
-        $response = $this->dropbox->copy('Dropbox-php_tests/alpha.txt', 'Dropbox-php_tests/bravo.txt');
+        $response = $this->dropbox->copy('Dropbox-php_tests-' . self::$directoryId . '/alpha.txt', 'Dropbox-php_tests/bravo.txt');
         $this->assertTrue(isset($response['is_dir']), 'copy should return an "is_dir" key');
         $this->assertFalse($response['is_dir'], '"is_dir" key of copy should be false');
     }
@@ -123,7 +127,7 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testMove()
     {
-        $response = $this->dropbox->move('Dropbox-php_tests/bravo.txt', 'Dropbox-php_tests/charlie.txt');
+        $response = $this->dropbox->move('Dropbox-php_tests-' . self::$directoryId . '/bravo.txt', 'Dropbox-php_tests/charlie.txt');
         $this->assertTrue(isset($response['is_dir']), 'move should return an "is_dir" key');
         $this->assertFalse($response['is_dir'], '"is_dir" key of move should be false');
     }
@@ -133,7 +137,7 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $response = $this->dropbox->delete('Dropbox-php_tests');
+        $response = $this->dropbox->delete('Dropbox-php_tests-' . self::$directoryId);
         $this->assertTrue(isset($response->is_deleted), 'delete should return an "is_deleted" object');
         $this->assertTrue($response->is_deleted, '"is_deleted" object of delete should be true');
     }
