@@ -1,3 +1,6 @@
+[![Build
+Status](https://travis-ci.org/Dropbox-PHP/dropbox-php.svg?branch=master)](https://travis-ci.org/Dropbox-PHP/dropbox-php)
+
 Dropbox-php
 ===========
 
