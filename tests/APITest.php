@@ -47,24 +47,25 @@ class APITest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGetAccountInfo
      */
-    public function testCreateFolderGetMetaData()
+    public function testCreateFolder()
     {
-        try {
-            $response = $this->dropbox->getMetaData('tests-' . self::$directoryId);
-        } catch (Dropbox_Exception_NotFound $e) {
-            $response = $this->dropbox->createFolder('tests-' . self::$directoryId);
-            $this->assertTrue(isset($response['is_dir']), 'createFolder should return an "is_dir" key');
-            $this->assertTrue($response['is_dir'], '"is_dir" key of createFolder should be true');
-
-            $response = $this->dropbox->getMetaData('tests-' . self::$directoryId);
-        }
-
+        $response = $this->dropbox->createFolder('tests-' . self::$directoryId);
+        $this->assertTrue(isset($response['is_dir']), 'createFolder should return an "is_dir" key');
+        $this->assertTrue($response['is_dir'], '"is_dir" key of createFolder should be true');
+    }
+    
+    /**
+     * @depends testCreateFolder
+     */
+    public function testGetMetaData()
+    {
+        $response = $this->dropbox->getMetaData('tests-' . self::$directoryId);
         $this->assertTrue(isset($response['contents']), 'getMetaData should return a "contents" key');
         $this->assertTrue(is_array($response['contents']), '"contents" key of getMetaData should return an array');
     }
 
     /**
-     * @depends testCreateFolderGetMetaData
+     * @depends testGetMetaData
      */
     public function testPutFile()
     {
@@ -78,7 +79,7 @@ class APITest extends PHPUnit_Framework_TestCase
         $this->assertTrue($response, 'putFile should return true');
     }
     /**
-     * @depends testCreateFolderGetMetaData
+     * @depends testGetMetaData
      */
     public function testPutVeryLargeFile()
     {
