@@ -171,7 +171,9 @@ class Dropbox_API {
             throw new Dropbox_Exception('File must be a file-resource or a file path string');
         }
         
-       	!$this->isSafeMode && set_time_limit(600);
+       	if (!$this->isSafeMode) {
+       		set_time_limit(600);
+       	}
         $result=$this->multipartFetch($this->api_content_url . 'files/' .
                 $root . '/' . trim($directory,'/'), $file, $filename);
 
@@ -202,7 +204,9 @@ class Dropbox_API {
 
             // Read from the file handle until EOF, uploading each chunk
             while ($data = fread($handle, $this->chunkSize)) {
-                !$this->isSafeMode && set_time_limit(600);
+                if (!$this->isSafeMode) {
+                	set_time_limit(600);
+                }
                 
                 // Open a temporary file handle and write a chunk of data to it
                 $chunkHandle = fopen('php://temp', 'rwb');
@@ -269,7 +273,9 @@ class Dropbox_API {
      */
     public function putStream($path, $file, $root = null, $overwrite = true)
     {
-       	!$this->isSafeMode && set_time_limit(600);
+       	if ($this->isSafeMode) {
+       		set_time_limit(600);
+       	}
         
         $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
         if (is_null($root)) {
