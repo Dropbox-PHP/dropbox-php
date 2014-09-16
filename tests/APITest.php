@@ -6,16 +6,19 @@ class APITest extends PHPUnit_Framework_TestCase
 
     protected $_largeData;
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
         $filename = dirname(__FILE__) . '/oauth.cache';
         if (!file_exists($filename)) {
             die("Run ./setup first to establish an oauth token!\n\n");
         }
-
+        require_once dirname(__FILE__) . '/../src/Dropbox/autoload.php';
+    }
+    protected function setUp()
+    {
+        $filename = dirname(__FILE__) . '/oauth.cache';
         $setup = unserialize(file_get_contents($filename));
 
-        require_once dirname(__FILE__) . '/../src/Dropbox/autoload.php';
         $this->oauthClass = $setup['class'];
         $oauth = new $this->oauthClass($setup['consumer']['key'], $setup['consumer']['secret']);
         $oauth->setToken($setup['tokens']);
@@ -23,13 +26,11 @@ class APITest extends PHPUnit_Framework_TestCase
         $this->dropbox = new Dropbox_API($oauth);
     }
 
-    /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     */
     protected function tearDown()
     {
-        unlink($this->_largeFilename);
+        if (isset($this->_largeFilename) && file_exists($this->_largeFilename)) {
+            unlink($this->_largeFilename);
+        }
     }
 
     public function testGetAccountInfo()
