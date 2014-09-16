@@ -2,6 +2,10 @@
 ini_set('memory_limit', -1);
 class APITest extends PHPUnit_Framework_TestCase
 {
+    protected $_largeFilename;
+
+    protected $_largeData;
+
     protected function setUp()
     {
         $filename = dirname(__FILE__) . '/oauth.cache';
@@ -17,6 +21,15 @@ class APITest extends PHPUnit_Framework_TestCase
         $oauth->setToken($setup['tokens']);
 
         $this->dropbox = new Dropbox_API($oauth);
+    }
+
+    /**
+     * Tears down the fixture, for example, close a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        unlink($this->_largeFilename);
     }
 
     public function testGetAccountInfo()
@@ -68,12 +81,10 @@ class APITest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('Known issues prevent the Dropbox_API::putFile method from working with the oauth extension');
         }
 
-        $filename = tempnam(sys_get_temp_dir(), '/large-temp.txt');
-        $kb = 1024;
-        $mb = 1024 * $kb;
-        $data = str_repeat('0', 50 * $mb);
-        file_put_contents($filename, $data);
-        $response = $this->dropbox->putFile('Dropbox-php_tests/alpha-large.txt', $filename);
+        $this->_largeFilename = tempnam(sys_get_temp_dir(), '/large-temp.txt');
+        $data = $this->_getLargeData();
+        file_put_contents($this->_largeFilename, $data);
+        $response = $this->dropbox->putFile('Dropbox-php_tests/alpha-large.txt', $this->_largeFilename);
         $this->assertTrue($response, 'putVeryLargeFile should return true');
     }
 
@@ -82,9 +93,7 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testGetVeryLargeFile()
     {
-        $kb = 1024;
-        $mb = 1024 * $kb;
-        $data = str_repeat('0', 50 * $mb);
+        $data = $this->_getLargeData();
         $response = $this->dropbox->getFile('Dropbox-php_tests/alpha-large.txt');
         $this->assertEquals($data, $response, 'getVeryLargeFile should return file contents');
     }
@@ -126,5 +135,18 @@ class APITest extends PHPUnit_Framework_TestCase
         $response = $this->dropbox->delete('Dropbox-php_tests');
         $this->assertTrue(isset($response->is_deleted), 'delete should return an "is_deleted" object');
         $this->assertTrue($response->is_deleted, '"is_deleted" object of delete should be true');
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getLargeData()
+    {
+        if (null == $this->_largeData) {
+            $kb = 1024;
+            $mb = 1024 * $kb;
+            $this->_largeData = str_repeat('0', 50 * $mb);
+        }
+        return $this->_largeData;
     }
 }
