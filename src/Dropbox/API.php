@@ -194,7 +194,7 @@ class Dropbox_API {
      */
     public function chunkedUpload($path, $handle, $root = null, $overwrite = true, $offset = 0, $uploadID = null)
     {
-        if (is_string($handle) && is_readable($filename)) {
+        if (is_string($handle) && is_readable($handle)) {
             $handle = fopen($handle, 'rb');
         }
 
