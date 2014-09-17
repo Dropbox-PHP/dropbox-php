@@ -80,6 +80,7 @@ class APITest extends PHPUnit_Framework_TestCase
     }
     /**
      * @depends testGetMetaData
+     * @large
      */
     public function testPutVeryLargeFile()
     {
@@ -96,6 +97,7 @@ class APITest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testPutVeryLargeFile
+     * @large
      */
     public function testGetVeryLargeFile()
     {
