@@ -4,6 +4,9 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          strict="true"
+         timeoutForSmallTests="5"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="30"
          verbose="true">
   <testsuites>
     <testsuite name="DropboxPHP">
