@@ -44,6 +44,20 @@ class Dropbox_API {
      */
     protected $root;
     protected $useSSL;
+    
+    /**
+     * PHP is Safe Mode
+     * 
+     * @var bool
+     */
+    private $isSafeMode;
+    
+    /**
+     * Chunked file size limit
+     * 
+     * @var unknown
+     */
+    public $chunkSize = 20971520; //20MB
 
     /**
      * Constructor
@@ -56,6 +70,7 @@ class Dropbox_API {
         $this->oauth = $oauth;
         $this->root = $root;
         $this->useSSL = $useSSL;
+        $this->isSafeMode = (version_compare(PHP_VERSION, '5.4', '<') && get_cfg_var('safe_mode'));
         if (!$this->useSSL)
         {
             throw new Dropbox_Exception('Dropbox REST API now requires that all requests use SSL');
@@ -101,6 +116,45 @@ class Dropbox_API {
      */
     public function putFile($path, $file, $root = null) {
 
+        if (is_resource($file)) {
+            $stat = fstat($file);
+            $size = $stat['size'];
+        } else if (is_string($file) && is_readable($file)) {
+            $size = filesize($file);
+        } else {
+        	throw new Dropbox_Exception('File must be a file-resource or a file path string');
+        }
+         
+        if ($this->oauth->isPutSupport()) {
+            if ($size) {
+                if ($size > $this->chunkSize) {
+                    $res = array('uploadID' => null, 'offset' => 0);
+                    $i[$res['offset']] = 0;
+                    while($i[$res['offset']] < 5) {
+                        $res = $this->chunkedUpload($path, $file, $root, true, $res['offset'], $res['uploadID']);
+                        if (isset($res['uploadID'])) {
+                            if (!isset($i[$res['offset']])) {
+                                $i[$res['offset']] = 0;
+                            } else {
+                                $i[$res['offset']]++;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    return true;
+                } else {
+                    return $this->putStream($path, $file, $root);
+                }
+            }
+        }
+
+        if ($size > 157286400) {
+            // Dropbox API /files has a maximum file size limit of 150 MB.
+            // https://www.dropbox.com/developers/core/docs#files-POST
+            throw new Dropbox_Exception("Uploading file to Dropbox failed");
+        }
+
         $directory = dirname($path);
         $filename = basename($path);
 
@@ -114,8 +168,12 @@ class Dropbox_API {
             $file = fopen($file,'rb');
 
         } elseif (!is_resource($file)) {
-            throw new Dropbox_Exception('File must be a file-resource or a string');
+            throw new Dropbox_Exception('File must be a file-resource or a file path string');
         }
+        
+       	if (!$this->isSafeMode) {
+       		set_time_limit(600);
+       	}
         $result=$this->multipartFetch($this->api_content_url . 'files/' .
                 $root . '/' . trim($directory,'/'), $file, $filename);
 
@@ -125,6 +183,116 @@ class Dropbox_API {
         return true;
     }
 
+    /**
+     * Uploads large files to Dropbox in mulitple chunks
+     * 
+     * @param string $file Absolute path to the file to be uploaded
+     * @param string|bool $filename The destination filename of the uploaded file
+     * @param string $path Path to upload the file to, relative to root
+     * @param boolean $overwrite Should the file be overwritten? (Default: true)
+     * @return stdClass
+     */
+    public function chunkedUpload($path, $handle, $root = null, $overwrite = true, $offset = 0, $uploadID = null)
+    {
+        if (is_string($handle) && is_readable($handle)) {
+            $handle = fopen($handle, 'rb');
+        }
+
+        if (is_resource($handle)) {
+            // Seek to the correct position on the file pointer
+            fseek($handle, $offset);
+
+            // Read from the file handle until EOF, uploading each chunk
+            while ($data = fread($handle, $this->chunkSize)) {
+                if (!$this->isSafeMode) {
+                	set_time_limit(600);
+                }
+                
+                // Open a temporary file handle and write a chunk of data to it
+                $chunkHandle = fopen('php://temp', 'rwb');
+                fwrite($chunkHandle, $data);
+
+                // Set the file, request parameters and send the request
+                $this->oauth->setInFile($chunkHandle);
+                $params = array('upload_id' => $uploadID, 'offset' => $offset);
+
+                try {
+                    // Attempt to upload the current chunk
+                    $res = $this->oauth->fetch($this->api_content_url . 'chunked_upload', $params, 'PUT');
+                    $response = json_decode($res['body'], true);
+                } catch (Exception $e) {
+                    $res = $this->oauth->getLastResponse();
+                    if ($response['httpStatus'] == 400) {
+                        // Incorrect offset supplied, return expected offset and upload ID
+                        $response = json_decode($res['body'], true);
+                        $uploadID = $response['upload_id'];
+                        $offset = $response['offset'];
+                        return array('uploadID' => $uploadID, 'offset' => $offset);
+                    } else {
+                        // Re-throw the caught Exception
+                        throw $e;
+                    }
+                    throw $e;
+                }
+
+                // On subsequent chunks, use the upload ID returned by the previous request
+                if (isset($response['upload_id'])) {
+                    $uploadID = $response['upload_id'];
+                }
+
+                // Set the data offset
+                if (isset($response['offset'])) {
+                    $offset = $response['offset'];
+                }
+
+                // Close the file handle for this chunk
+                fclose($chunkHandle);
+            }
+
+            // Complete the chunked upload
+            $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+            if (is_null($root)) {
+            	$root = $this->root;
+            }
+            $params = array('overwrite' => (int) $overwrite, 'upload_id' => $uploadID);
+            return $this->oauth->fetch($this->api_content_url . 'commit_chunked_upload/' .
+                    $root . '/' . ltrim($path,'/'), $params, 'POST');
+        } else {
+            throw new Dropbox_Exception('Could not open ' . $handle . ' for reading');
+        }
+    }
+
+    /**
+     * Uploads file data from a stream
+     * 
+     * Note: This function is experimental and requires further testing
+     * @param resource $stream A readable stream created using fopen()
+     * @param string $filename The destination filename, including path
+     * @param boolean $overwrite Should the file be overwritten? (Default: true)
+     * @return array
+     */
+    public function putStream($path, $file, $root = null, $overwrite = true)
+    {
+       	if ($this->isSafeMode) {
+       		set_time_limit(600);
+       	}
+        
+        $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
+        if (is_null($root)) {
+        	$root = $this->root;
+        }
+
+        $params = array('overwrite' => (int) $overwrite);
+        $this->oauth->setInfile($file);
+        $result=$this->oauth->fetch($this->api_content_url . 'files_put/' .
+                $root . '/' . ltrim($path,'/'), $params, 'PUT');
+        
+        if (!isset($result["httpStatus"]) || $result["httpStatus"] != 200) {
+            throw new Dropbox_Exception("Uploading file to Dropbox failed");
+        }
+        
+        return true;
+    }
 
     /**
      * Copies a file or directory from one location to another
