@@ -497,14 +497,16 @@ class Dropbox_API {
      *
      * Note: Links created by the /shares API call expire after thirty days.
      *
-     * @param type $path
-     * @param type $root
-     * @return type
+     * @param string $path
+     * @param string $root      Use this to override the default root path (sandbox/dropbox)
+     * @param string $short_url When true (default), the URL returned will be shortened using the Dropbox URL shortener
+     * @return array
      */
-    public function share($path, $root = null) {
+    public function share($path, $root = null, $short_url = true) {
         if (is_null($root)) $root = $this->root;
         $path = str_replace(array('%2F','~'), array('/','%7E'), rawurlencode($path));
-        $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($path, '/'), array(), 'POST');
+        $short_url = ((is_string($short_url) && strtolower($short_url) === 'false') || !$short_url)? 'false' : 'true';
+        $response = $this->oauth->fetch($this->api_url.  'shares/'. $root . '/' . ltrim($path, '/'), array('short_url' => $short_url), 'POST');
         return json_decode($response['body'],true);
 
     }
