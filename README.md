@@ -30,5 +30,5 @@ Questions?
 ----------
 
 [Dropbox-php Mailing list](http://groups.google.com/group/dropbox-php)  
-[Official Dropbox developer forum](http://forums.dropbox.com/forum.php?id=5)
+[Official Dropbox forums](https://www.dropboxforum.com/hc/communities/public/questions)
  
