@@ -476,8 +476,8 @@ class Dropbox_API {
      *
      * Returns metadata for all files and folders that match the search query.
      *
-	 * @added by: diszo.sasil
-	 *
+     * @author: diszo.sasil
+     *
      * @param string $query
      * @param string $root Use this to override the default root path (sandbox/dropbox)
 	 * @param string $path
