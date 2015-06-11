@@ -4,6 +4,8 @@ Status](https://travis-ci.org/Dropbox-PHP/dropbox-php.svg?branch=master)](https:
 Dropbox-php
 ===========
 
+[![Join the chat at https://gitter.im/Dropbox-PHP/dropbox-php](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Dropbox-PHP/dropbox-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This PHP library allows you to easily integrate dropbox with PHP.
 
 The following PHP extension is required:
