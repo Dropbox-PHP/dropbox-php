@@ -1,10 +1,9 @@
 [![Build
 Status](https://travis-ci.org/Dropbox-PHP/dropbox-php.svg?branch=master)](https://travis-ci.org/Dropbox-PHP/dropbox-php)
+[![Join the chat at https://gitter.im/Dropbox-PHP/dropbox-php](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Dropbox-PHP/dropbox-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Dropbox-php
 ===========
-
-[![Join the chat at https://gitter.im/Dropbox-PHP/dropbox-php](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Dropbox-PHP/dropbox-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This PHP library allows you to easily integrate dropbox with PHP.
 
@@ -21,8 +20,15 @@ The extension is recommended, but if you can't install php extensions you should
 Installing
 ----------
 
-    pear channel-discover pear.dropbox-php.com
-    pear install dropbox-php/Dropbox-alpha
+    composer require "dropbox-php/dropbox-php" "1.*"
+
+Or by adding the following to your composer.json:
+
+    "require": {
+        "dropbox-php/dropbox-php": “1.*”
+    }
+
+NOTE: Pear install is no longer supported
 
 Documentation
 -------------
