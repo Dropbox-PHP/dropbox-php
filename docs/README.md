@@ -21,7 +21,7 @@ The extension is recommended, but if you can’t install php extensions you shou
 
 ## Documentation ##
 
-* Check out the [documentation](http://www.dropbox-php.com/docs).
+* Check out the [documentation](http://dropbox-php.github.io/dropbox-php/docs).
 * Have a look at the [unit test](https://github.com/Dropbox-PHP/dropbox-php/tree/master/tests).
 
 ## Questions? ##

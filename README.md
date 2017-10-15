@@ -32,7 +32,7 @@ NOTE: Pear install is no longer supported
 
 Documentation
 -------------
-Check out the [documentation](http://www.dropbox-php.com/docs).  
+Check out the [documentation](http://dropbox-php.github.io/dropbox-php/docs).  
 
 Questions?
 ----------
